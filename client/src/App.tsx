@@ -15,18 +15,21 @@ import StudentPage from "./components/studentProfile/studentPage";
 export default function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/student" element={<StudentPage />} />
-        <Route path="/" element={<MainMenuPage />} />
-        <Route path="/student/register" element={<StudentRegisterForm />} />
-        <Route path="/student/login" element={<StudentLoginForm />} />
-        <Route path="/company/exjobbads/create" element={<ExjobbAdForm companyId={/*get from auth context or user*/ 1} />} />
-        <Route path="/student/exjobbads" element={<ExjobbAdCards />} />
-        <Route path="/student/dashboard" element={<StudentDashboard />} />
-        <Route path="/student/edit-profile" element={<EditProfile />} />
-        <Route path="/student/edit-description" element={<EditDescription />} />
-        <Route path="/student/upload-image" element={<UploadImage />} />
-      </Routes>
-    </Router>
+  <Routes>
+    <Route path="/" element={<MainMenuPage />} />
+    <Route path="/student/register" element={<StudentRegisterForm />} />
+    <Route path="/student/login" element={<StudentLoginForm />} />
+    <Route path="/company/exjobbads/create" element={<ExjobbAdForm companyId={1} />} />
+    <Route path="/student" element={<StudentPage />}>
+      {/* Nested student routes go here */}
+      <Route path="dashboard" element={<StudentDashboard />} />
+      <Route path="edit-profile" element={<EditProfile />} />
+      <Route path="edit-description" element={<EditDescription />} />
+      <Route path="upload-image" element={<UploadImage />} />
+      <Route path="exjobbads" element={<ExjobbAdCards />} />
+      {/* more student pages */}
+    </Route>
+  </Routes>
+</Router>
   );
 }

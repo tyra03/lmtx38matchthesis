@@ -1,21 +1,23 @@
 import React from "react";
-import { Nav } from "react-bootstrap";
+import { Nav, Card } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-
-import "../../css/sidebarMenu.css"; // (Optional: style it as you like)
+import "../../css/studentSidebar.css"; // You can extend or override with more styles
 
 const StudentSidebarMenu: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/"); // Or wherever your login/landing page is
+    navigate("/");
   };
 
   return (
-    <div className="sidebar-menu d-flex flex-column justify-content-between" style={{height: "100vh"}}>
-      <div>
+    <Card className="shadow sidebar-card" style={{ borderRadius: 10, margin: "0 2rem 0 0", minHeight: "400px" }}>
+      <Card.Body>
         <Nav className="flex-column" variant="pills">
+          <Nav.Link as={NavLink} to="/student/dashboard">
+            🏠 Dashboard
+          </Nav.Link>
           <Nav.Link as={NavLink} to="/student/favorites">
             ⭐ Favorited Exjobb Ads
           </Nav.Link>
@@ -23,15 +25,15 @@ const StudentSidebarMenu: React.FC = () => {
             🆕 Browse New Ads
           </Nav.Link>
         </Nav>
-      </div>
-      <div className="mb-4">
-        <Nav className="flex-column">
-          <Nav.Link as="button" onClick={handleLogout} style={{color: "#d9534f", fontWeight: "bold"}}>
-            🚪 Log Out
-          </Nav.Link>
-        </Nav>
-      </div>
-    </div>
+        <div className="mt-4">
+          <Nav className="flex-column">
+            <Nav.Link as="button" onClick={handleLogout} style={{ color: "#d9534f"}}>
+              🚪 Log Out
+            </Nav.Link>
+          </Nav>
+        </div>
+      </Card.Body>
+    </Card>
   );
 };
 

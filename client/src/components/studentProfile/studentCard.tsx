@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import axios from "axios";
 import {
   Container,
@@ -14,18 +15,16 @@ import ProfileCard from "./previewCard";
 import "../../css/cardImageNonPreview.css";
 
 export default function StudentDashboard() {
+  // Receive preview toggle from parent via context
+  const { showCardPreview } = useOutletContext<{ showCardPreview: boolean }>();
+
   const [profile, setProfile] = useState<any>(null);
   const [description, setDescription] = useState("");
   const [image, setImage] = useState<File | null>(null);
-  const [message, setMessage] = useState<{
-    type: "danger" | "success";
-    text: string;
-  } | null>(null);
+  const [message, setMessage] = useState<{ type: "danger" | "success"; text: string } | null>(null);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [showCardPreview, setShowCardPreview] = useState(true);
 
-  // Fetch profile data on mount
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -47,7 +46,6 @@ export default function StudentDashboard() {
     fetchProfile();
   }, []);
 
-  // Auto-dismiss alert message after 3 seconds
   useEffect(() => {
     if (message) {
       const timeout = setTimeout(() => setMessage(null), 3000);
@@ -55,7 +53,6 @@ export default function StudentDashboard() {
     }
   }, [message]);
 
-  // Handle profile save
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -63,8 +60,6 @@ export default function StudentDashboard() {
 
     try {
       const token = localStorage.getItem("token");
-
-      // Update description
       await axios.put(
         "http://localhost:5000/api/students/me",
         { description },
@@ -73,7 +68,6 @@ export default function StudentDashboard() {
         }
       );
 
-      // Upload image if selected
       if (image) {
         const formData = new FormData();
         formData.append("image", image);
@@ -85,7 +79,6 @@ export default function StudentDashboard() {
         });
       }
 
-      // Refresh profile
       const updated = await axios.get("http://localhost:5000/api/students/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -98,7 +91,6 @@ export default function StudentDashboard() {
     }
   };
 
-  // Handle file selection
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setImage(e.target.files?.[0] || null);
   };
@@ -106,20 +98,8 @@ export default function StudentDashboard() {
   if (loading) return <Spinner animation="border" className="m-4" />;
 
   return (
-    <Container style={{ maxWidth: "1000px", margin: "2rem auto" }}>
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2 className="mb-0">Dashboard</h2>
-        <Button
-          variant="secondary"
-          onClick={() => setShowCardPreview((prev) => !prev)}
-        >
-          {showCardPreview ? "Hide Card Preview" : "Show Card Preview"}
-        </Button>
-      </div>
-
-      {/* Alert message, auto-dismisses */}
+    <>
       {message && <Alert variant={message.type}>{message.text}</Alert>}
-
       <Row>
         {/* Left: Form */}
         <Col md={showCardPreview ? 7 : 12}>
@@ -209,6 +189,6 @@ export default function StudentDashboard() {
           </Col>
         )}
       </Row>
-    </Container>
+    </>
   );
 }
