@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainMenuPage from "./components/mainMenu";
 import StudentRegisterForm from "./components/studentProfile/studentRegistration";
@@ -10,24 +9,25 @@ import EditDescription from "./components/studentProfile/editDescription";
 import EditProfile from "./components/studentProfile/editDescription";
 import UploadImage from "./components/studentProfile/uploadImage";
 import StudentPage from "./components/studentProfile/studentPage";
-// ... import other forms as you build them
+import AdminLoginForm from "./components/adminProfile/adminLogin";
+import PendingAds from "./components/adminProfile/pendingAds";
 
 export default function App() {
   return (
     <Router>
   <Routes>
-    <Route path="/" element={<MainMenuPage />} />
-    <Route path="/student/register" element={<StudentRegisterForm />} />
-    <Route path="/student/login" element={<StudentLoginForm />} />
-    <Route path="/company/exjobbads/create" element={<ExjobbAdForm companyId={1} />} />
-    <Route path="/student" element={<StudentPage />}>
-      {/* Nested student routes go here */}
+      <Route path="/" element={<MainMenuPage />} />
+      <Route path="/student/register" element={<StudentRegisterForm />} />
+      <Route path="/student/login" element={<StudentLoginForm />} />
+      <Route path="/admin/login" element={<AdminLoginForm />} />
+      <Route path="/admin/pending-ads" element={<PendingAds />} />
+      <Route path="/company/exjobbads/create" element={<ExjobbAdForm companyId={1} />} />
+      <Route path="/student" element={<StudentPage />}>
       <Route path="dashboard" element={<StudentDashboard />} />
       <Route path="edit-profile" element={<EditProfile />} />
       <Route path="edit-description" element={<EditDescription />} />
       <Route path="upload-image" element={<UploadImage />} />
       <Route path="exjobbads" element={<ExjobbAdCards />} />
-      {/* more student pages */}
     </Route>
   </Routes>
 </Router>

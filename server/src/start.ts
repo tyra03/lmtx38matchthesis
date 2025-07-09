@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import studentRouter from "./router/studentRouter";
 import exjobbAdRouter from "./router/exjobbAdRouter";
+import adminRouter from "./router/adminRouter";
 import { sequelize } from "./model";
 import path from "path";
 
@@ -12,6 +13,7 @@ app.use(cors());
 app.use("/api/students", studentRouter);
 app.use("/api/ads", exjobbAdRouter);
 app.use("/api/exjobbads", exjobbAdRouter);
+app.use("/api/admin", adminRouter);
 app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
 
 // Sync DB before starting server
