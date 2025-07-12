@@ -14,15 +14,26 @@
  }
 
  export async function approveExjobbAd(adId: number, adminId: number) {
-   // Only admin can approve
-   const admin = await User.findByPk(adminId);
-   if (!admin || admin.role !== "admin") return null;
-   const ad = await ExjobbAd.findByPk(adId);
-   if (!ad) return null;
-   ad.status = "approved";
-   await ad.save();
-   return ad.toJSON();
- }
+  // Only admin can approve
+  const admin = await User.findByPk(adminId);
+  if (!admin || admin.role !== "admin") return null;
+  const ad = await ExjobbAd.findByPk(adId);
+  if (!ad) return null;
+  ad.status = "approved";
+  await ad.save();
+  return ad.toJSON();
+}
+
+export async function rejectExjobbAd(adId: number, adminId: number) {
+  // Only admin can reject
+  const admin = await User.findByPk(adminId);
+  if (!admin || admin.role !== "admin") return null;
+  const ad = await ExjobbAd.findByPk(adId);
+  if (!ad) return null;
+  ad.status = "rejected";
+  await ad.save();
+  return ad.toJSON();
+}
 
  export async function getApprovedAds() {
    return await ExjobbAd.findAll({ where: { status: "approved" } });
