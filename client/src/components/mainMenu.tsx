@@ -63,16 +63,16 @@ export default function MainMenuPage() {
                 <Button
                   variant="outline-light"
                   className="w-100 mb-2"
-                  onClick={() => navigate("/company/exjobbads/create")}
+                  onClick={() => navigate("/company/ad/create")}
                 >
                   Create Exjobb Ad
                 </Button>
                 <Button
-                  variant="outline-light"
-                  className="w-100 mb-2"
-                  onClick={() => navigate("/company/register")}
+                  variant="dark"
+                  className="w-100"
+                  onClick={() => navigate("/company/login")}
                 >
-                  Register as Company
+                  Log in as Company
                 </Button>
               </Card.Body>
             </Card>

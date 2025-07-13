@@ -11,7 +11,7 @@ router.post("/", async (req: Request, res: Response) => {
     if (!title || !points || !location || !programs || !numStudents || !description || !companyId) {
       return res.status(400).json({ message: "Missing required fields" });
     }
-    
+
    try {
      const ad = await ExjobbAd.create({
        title, points, location, programs, numStudents, imageUrl, description, companyId
@@ -22,14 +22,14 @@ router.post("/", async (req: Request, res: Response) => {
    }
  });
 
- // List all APPROVED ads (for students)
- router.get("/", async (_req: Request, res: Response) => {
-   try {
-     const ads = await ExjobbAd.findAll({ where: { status: "approved" } });
-     res.json(ads);
-   } catch (err) {
-     res.status(500).json({ message: "Could not fetch ads" });
-   }
- });
+// List all ACCEPTED ads (for students)
+router.get("/", async (_req: Request, res: Response) => {
+  try {
+    const ads = await ExjobbAd.findAll({ where: { status: "accepted" } });
+    res.json(ads);
+  } catch (err) {
+    res.status(500).json({ message: "Could not fetch ads" });
+  }
+});
 
  export default router;

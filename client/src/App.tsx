@@ -10,7 +10,8 @@ import EditProfile from "./components/studentProfile/editDescription";
 import UploadImage from "./components/studentProfile/uploadImage";
 import StudentPage from "./components/studentProfile/studentPage";
 import AdminLoginForm from "./components/adminProfile/adminLogin";
-import PendingAds from "./components/adminProfile/pendingAds";
+import AdminPage from "./components/adminProfile/adminPage";
+import AdminDashboard from "./components/adminProfile/adminDashboard";
 
 export default function App() {
   return (
@@ -20,8 +21,9 @@ export default function App() {
       <Route path="/student/register" element={<StudentRegisterForm />} />
       <Route path="/student/login" element={<StudentLoginForm />} />
       <Route path="/admin/login" element={<AdminLoginForm />} />
-      <Route path="/admin/pending-ads" element={<PendingAds />} />
-      <Route path="/company/exjobbads/create" element={<ExjobbAdForm companyId={1} />} />
+      <Route path="/admin" element={<AdminPage />}>
+        <Route path="dashboard" element={<AdminDashboard />} />
+      </Route>      <Route path="/company/exjobbads/create" element={<ExjobbAdForm companyId={1} />} />
       <Route path="/student" element={<StudentPage />}>
       <Route path="dashboard" element={<StudentDashboard />} />
       <Route path="edit-profile" element={<EditProfile />} />

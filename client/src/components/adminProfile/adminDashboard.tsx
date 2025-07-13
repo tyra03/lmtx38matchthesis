@@ -9,7 +9,7 @@ interface ExjobbAd {
   description: string;
 }
 
-export default function PendingAds() {
+export default function adminDashboard() {
   const [ads, setAds] = useState<ExjobbAd[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
