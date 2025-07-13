@@ -35,14 +35,27 @@ export default function adminDashboard() {
 
   const approveAd = async (id: number) => {
     try {
-      await axios.post(
-        `http://localhost:5000/api/admin/ads/${id}/approve`,
-        {},
+      await axios.patch(
+        `http://localhost:5000/api/admin/ads/${id}/status`,
+        { status: "accepted" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAds((prev) => prev.filter((ad) => ad.id !== id));
     } catch (err: any) {
       alert(err?.response?.data?.message || "Failed to approve ad");
+    }
+  };
+
+  const rejectAd = async (id: number) => {
+    try {
+      await axios.patch(
+        `http://localhost:5000/api/admin/ads/${id}/status`,
+        { status: "rejected" },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setAds((prev) => prev.filter((ad) => ad.id !== id));
+    } catch (err: any) {
+      alert(err?.response?.data?.message || "Failed to reject ad");
     }
   };
 
@@ -60,6 +73,7 @@ export default function adminDashboard() {
             <Card.Title>{ad.title}</Card.Title>
             <Card.Text>{ad.description}</Card.Text>
             <Button onClick={() => approveAd(ad.id)} className="me-2">Approve</Button>
+            <Button variant="danger" onClick={() => rejectAd(ad.id)} className="ms-2">Reject</Button>
           </Card.Body>
         </Card>
       ))}
