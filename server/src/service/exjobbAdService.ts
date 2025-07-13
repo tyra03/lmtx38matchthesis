@@ -18,6 +18,7 @@ export async function updateAdStatus(adId: number, status: "accepted" | "rejecte
   if (!admin || admin.role !== "admin") return null;
   const ad = await ExjobbAd.findByPk(adId);
   if (!ad) return null;
+  ad.status = status;
   await ad.save();
   return ad.toJSON();
 }
