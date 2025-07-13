@@ -37,7 +37,7 @@ export default function AdminLoginForm() {
       <h2>Admin Login</h2>
       {message && <Alert variant={message.type}>{message.text}</Alert>}
       <Form.Group controlId="identifier" className="mb-3">
-        <Form.Label>Email or Phone</Form.Label>
+        <Form.Label>Username</Form.Label>
         <Form.Control
           name="identifier"
           value={identifier}
