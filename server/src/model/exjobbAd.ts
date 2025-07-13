@@ -11,7 +11,7 @@ export interface ExjobbAdAttributes {
   imageUrl?: string;
   description: string;
   companyId: number;     // FK to User (company)
-  status: "pending" | "approved" | "rejected";
+  status: "pending" | "accepted" | "rejected";
 }
 
 interface ExjobbAdCreationAttributes extends Optional<ExjobbAdAttributes, "id" | "imageUrl" | "status"> {}
@@ -27,7 +27,7 @@ export class ExjobbAd extends Model<ExjobbAdAttributes, ExjobbAdCreationAttribut
   public imageUrl?: string;
   public description!: string;
   public companyId!: number;
-  public status!: "pending" | "approved" | "rejected";
+  public status!: "pending" | "accepted" | "rejected";
 }
 
 ExjobbAd.init(
@@ -41,7 +41,7 @@ ExjobbAd.init(
     imageUrl: { type: DataTypes.STRING, allowNull: true },
     description: { type: DataTypes.TEXT, allowNull: false },
     companyId: { type: DataTypes.INTEGER, allowNull: false },
-    status: { type: DataTypes.ENUM("pending", "approved", "rejected"), defaultValue: "pending" }
+    status: { type: DataTypes.ENUM("pending", "accepted", "rejected"), defaultValue: "pending" }
   },
   {
     sequelize,

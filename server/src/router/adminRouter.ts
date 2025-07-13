@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { getPendingAds, approveExjobbAd } from "../service/exjobbAdService";
+import { getPendingAds, acceptAd, rejectAd } from "../service/exjobbAdService";
 import { verifyAdminLogin } from "../service/adminService"
 
 dotenv.config();
@@ -55,16 +55,29 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/ads/:id/approve", requireAdmin, async (req: Request, res: Response) => {
+router.post("/ads/:id/accept", requireAdmin, async (req: Request, res: Response) => {
   const adId = parseInt(req.params.id, 10);
   if (isNaN(adId)) return res.status(400).json({ message: "Invalid ad id" });
   const adminId = (req as any).userId;
   try {
-    const ad = await approveExjobbAd(adId, adminId);
+    const ad = await acceptAd(adId, adminId);
     if (!ad) return res.status(404).json({ message: "Ad not found" });
     res.json(ad);
   } catch (err) {
-    res.status(500).json({ message: "Could not approve ad" });
+    res.status(500).json({ message: "Could not accept ad" });
+  }
+});
+
+router.post("/ads/:id/reject", requireAdmin, async (req: Request, res: Response) => {
+  const adId = parseInt(req.params.id, 10);
+  if (isNaN(adId)) return res.status(400).json({ message: "Invalid ad id" });
+  const adminId = (req as any).userId;
+  try {
+    const ad = await rejectAd(adId, adminId);
+    if (!ad) return res.status(404).json({ message: "Ad not found" });
+    res.json(ad);
+  } catch (err) {
+    res.status(500).json({ message: "Could not reject ad" });
   }
 });
 

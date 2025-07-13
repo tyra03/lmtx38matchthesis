@@ -46,19 +46,6 @@ export default function PendingAds() {
     }
   };
 
-  const rejectAd = async (id: number) => {
-    try {
-      await axios.post(
-        `http://localhost:5000/api/admin/ads/${id}/reject`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setAds((prev) => prev.filter((ad) => ad.id !== id));
-    } catch (err: any) {
-      alert(err?.response?.data?.message || "Failed to reject ad");
-    }
-  };
-
   if (loading) return <Spinner animation="border" style={{ margin: "2rem" }} />;
 
   if (error) return <Alert variant="danger">{error}</Alert>;
@@ -72,8 +59,7 @@ export default function PendingAds() {
           <Card.Body>
             <Card.Title>{ad.title}</Card.Title>
             <Card.Text>{ad.description}</Card.Text>
-            <Button variant="primary" onClick={() => approveAd(ad.id)} className="me-2">Approve</Button>
-            <Button variant="danger" onClick={() => rejectAd(ad.id)}>Reject</Button>
+            <Button onClick={() => approveAd(ad.id)} className="me-2">Approve</Button>
           </Card.Body>
         </Card>
       ))}

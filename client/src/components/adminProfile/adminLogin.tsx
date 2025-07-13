@@ -21,7 +21,7 @@ export default function AdminLoginForm() {
       });
       setMessage({ type: "success", text: "Login successful!" });
       localStorage.setItem("token", res.data.token);
-      navigate("/admin/pending-ads");
+      navigate("/admin/dashboard");
     } catch (err: any) {
       setMessage({
         type: "danger",
