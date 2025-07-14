@@ -42,7 +42,7 @@ ExjobbAd.init(
     numStudents: { type: DataTypes.INTEGER, allowNull: false },
     imageUrl: { type: DataTypes.STRING, allowNull: true },
     description: { type: DataTypes.TEXT, allowNull: false },
-    contactEmail: { type: DataTypes.STRING, allowNull: false },
+    contactEmail: { type: DataTypes.STRING, allowNull: false, defaultValue: "" },
     companyId: { type: DataTypes.INTEGER, allowNull: true },
     status: { type: DataTypes.ENUM("pending", "approved", "rejected"), defaultValue: "pending" }
   },

@@ -1,9 +1,9 @@
  // src/service/exjobbAdService.ts
-import { ExjobbAd } from "../model/exjobbAd";
+import { ExjobbAd, ExjobbAdAttributes } from "../model/exjobbAd";
 import { User } from "../model/User";
 
 export async function createExjobbAd(
-  data: Omit<ExjobbAd, "id" | "status"> & { contactEmail: string; companyId?: number | null;}) {
+  data: Omit<ExjobbAdAttributes, "id" | "status"> & { companyId?: number | null }) {
   // companyId must correspond to a user with role "company"
   const company = await User.findByPk(data.companyId);
   if (data.companyId) {
