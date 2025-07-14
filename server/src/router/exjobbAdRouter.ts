@@ -14,7 +14,7 @@ router.post("/", async (req: Request, res: Response) => {
 
    try {
      const ad = await ExjobbAd.create({
-       title, points, location, programs, numStudents, imageUrl, description, contactEmail, companyId: companyId ?? null
+       title, points, location, programs, numStudents, imageUrl, description, contactEmail
      });
      res.status(201).json(ad);
    } catch (err) {

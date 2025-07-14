@@ -1,6 +1,6 @@
 // src/model/ExjobbInteraction.ts
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "./index";
+import { sequelize } from "./db";
 
 export class ExjobbAction extends Model {
   public id!: number;
