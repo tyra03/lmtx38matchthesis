@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { createCompany, verifyCompanyLogin } from "../service/companyService";
 import { authenticateJWT, requireCompany, AuthRequest } from "../middleware/auth";
-import { User } from "../model";
+import { User, ApprovedCompanyEmail } from "../model";
 
 dotenv.config();
 const router = express.Router();
@@ -14,6 +14,10 @@ router.post("/register", async (req: Request, res: Response) => {
     return res.status(400).json({ message: "Missing fields" });
   }
   try {
+    const approved = await ApprovedCompanyEmail.findOne({ where: { email } });
+    if (!approved) {
+      return res.status(403).json({ message: "Email not approved for registration" });
+    }
     const company = await createCompany({ name, phone, email, password, companyName });
     if (!company) {
       return res.status(409).json({ message: "Phone or email already exists" });

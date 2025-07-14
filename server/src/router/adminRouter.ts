@@ -74,7 +74,7 @@ router.patch("/ads/:id/status", requireAdmin, async (req: Request, res: Response
     if (adRecord) {
       const company = await User.findByPk(adRecord.companyId);
       if (company) {
-        if (status === "accepted") {
+        if (status === "approved") {
           await ApprovedCompanyEmail.create({ email: company.email});
           await sendApprovalEmail(company.email);
         } else {

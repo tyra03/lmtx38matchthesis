@@ -20,7 +20,7 @@ export async function sendApprovalEmail(to: string) {
     to,
     subject: "Ad Approved",
     text:
-      "Your advertisement has been approved. Please register a company account to manage it.",
+      "Your exjobb ad has been approved. Please register a company account to manage it.",
   });
 }
 
@@ -30,6 +30,6 @@ export async function sendRejectionEmail(to: string) {
     from: process.env.SMTP_FROM,
     to,
     subject: "Ad Rejected",
-    text: "Unfortunately your advertisement was rejected.",
+    text: "Unfortunately your exjobb ad was rejected. You are welcome to submit another advertisement.",
   });
 }

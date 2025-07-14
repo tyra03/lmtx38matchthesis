@@ -6,7 +6,13 @@ import { useNavigate } from "react-router-dom";
 interface ExjobbAd {
   id: number;
   title: string;
+  points: number;
+  location: string;
+  programs: string[];
+  numStudents: number;
+  imageUrl?: string;
   description: string;
+  contactEmail: string;
 }
 
 export default function adminDashboard() {
@@ -69,8 +75,18 @@ export default function adminDashboard() {
       {ads.length === 0 && <p>No pending ads</p>}
       {ads.map((ad) => (
         <Card key={ad.id} className="mb-3">
+          {ad.imageUrl && (
+            <Card.Img variant="top" src={ad.imageUrl} style={{ maxHeight: 200, objectFit: "cover" }} />
+          )}
           <Card.Body>
             <Card.Title>{ad.title}</Card.Title>
+            <Card.Text>
+              <strong>Points:</strong> {ad.points} hp<br />
+              <strong>Location:</strong> {ad.location}<br />
+              <strong>Programs:</strong> {ad.programs.join(", ")}<br />
+              <strong>Number of Students:</strong> {ad.numStudents}<br />
+              <strong>Contact:</strong> {ad.contactEmail}
+            </Card.Text>
             <Card.Text>{ad.description}</Card.Text>
             <Button onClick={() => approveAd(ad.id)} className="me-2">Approve</Button>
             <Button variant="danger" onClick={() => rejectAd(ad.id)} className="ms-2">Reject</Button>
