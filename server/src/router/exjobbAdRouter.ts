@@ -7,14 +7,14 @@
  // Create a new ad
 router.post("/", async (req: Request, res: Response) => {
     // TODO: Authenticate and verify company user!
-    const { title, points, location, programs, numStudents, imageUrl, description, companyId } = req.body;
-    if (!title || !points || !location || !programs || !numStudents || !description || !companyId) {
+    const { title, points, location, programs, numStudents, imageUrl, description, companyId, contactEmail } = req.body;
+  if (!title || !points || !location || !programs || !numStudents || !description || !contactEmail) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
    try {
      const ad = await ExjobbAd.create({
-       title, points, location, programs, numStudents, imageUrl, description, companyId
+       title, points, location, programs, numStudents, imageUrl, description, contactEmail, companyId: companyId ?? null
      });
      res.status(201).json(ad);
    } catch (err) {

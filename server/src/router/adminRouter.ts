@@ -2,8 +2,10 @@ import express, { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { getPendingAds, updateAdStatus } from "../service/exjobbAdService";
-import { verifyAdminLogin } from "../service/adminService"
-
+import { verifyAdminLogin } from "../service/adminService";
+import { ExjobbAd } from "../model/exjobbAd";
+import { User, ApprovedCompanyEmail } from "../model";
+import { sendApprovalEmail, sendRejectionEmail } from "../service/emailService";
 dotenv.config();
 
 const router = express.Router();
@@ -65,11 +67,25 @@ router.patch("/ads/:id/status", requireAdmin, async (req: Request, res: Response
 
   const adminId = (req as any).userId;
   try {
-  const ad = await updateAdStatus(adId, status, adminId);
-    if (!ad) return res.status(404).json({ message: "Ad not found" });
-    res.json(ad);
-  } 
-  catch (err) {
+    const updated = await updateAdStatus(adId, status, adminId);
+    if (!updated) return res.status(404).json({ message: "Ad not found" });
+
+    const adRecord = await ExjobbAd.findByPk(adId);
+    if (adRecord) {
+      const company = await User.findByPk(adRecord.companyId);
+      if (company) {
+        if (status === "accepted") {
+          await ApprovedCompanyEmail.create({ email: company.email, adId });
+          await sendApprovalEmail(company.email);
+        } else {
+          await sendRejectionEmail(company.email);
+        }
+      }
+    }
+    res.json(updated);
+  } catch (err) {
+    console.error(err);
+  
     res.status(500).json({ message: "Could not update ad status" });
   }
 });

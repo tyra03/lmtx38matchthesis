@@ -3,11 +3,13 @@ import { ExjobbAd } from "../model/exjobbAd";
 import { User } from "../model/User";
 
 export async function createExjobbAd(
-  data: Omit<ExjobbAd, "id" | "status"> & { companyId: number }
-) {
+  data: Omit<ExjobbAd, "id" | "status"> & { contactEmail: string; companyId?: number | null;}) {
   // companyId must correspond to a user with role "company"
   const company = await User.findByPk(data.companyId);
-  if (!company || company.role !== "company") return null;
+  if (data.companyId) {
+    const company = await User.findByPk(data.companyId);
+    if (!company || company.role !== "company") return null;
+  }
   // Save as pending
   const ad = await ExjobbAd.create({ ...data, status: "pending" });
   return ad.toJSON();

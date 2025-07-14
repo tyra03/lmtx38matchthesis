@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainMenuPage from "./components/mainMenu";
 import StudentRegisterForm from "./components/studentProfile/studentRegistration";
 import StudentLoginForm from "./components/studentProfile/studentLogin";
+import CompanyLoginForm from "./components/companyProfile/companyLogin";
+import CompanyRegisterForm from "./components/companyProfile/companyRegistration";
 import ExjobbAdForm from "./components/companyProfile/exjobbAd";
 import ExjobbAdCards from "./components/companyProfile/displayExjobbAd";
 import StudentDashboard from "./components/studentProfile/studentCard";
@@ -21,6 +23,8 @@ export default function App() {
             <Route path="/student/register" element={<StudentRegisterForm />} />
             <Route path="/student/login" element={<StudentLoginForm />} />
             <Route path="/admin/login" element={<AdminLoginForm />} />
+            <Route path="/company/login" element={<CompanyLoginForm />} />
+            <Route path="/company/register" element={<CompanyRegisterForm />} />
             <Route path="/admin" element={<AdminPage />}>
               <Route path="dashboard" element={<AdminDashboard />} />
             </Route>

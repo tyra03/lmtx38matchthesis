@@ -11,7 +11,8 @@ export default function ExjobbAdForm({ companyId }: { companyId: number }) {
     programs: [] as string[],
     numStudents: 1,
     imageUrl: "",
-    description: ""
+    description: "",
+    contactEmail: ""
   });
   const [message, setMessage] = useState<{ type: "success" | "danger"; text: string } | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -33,7 +34,7 @@ export default function ExjobbAdForm({ companyId }: { companyId: number }) {
       await axios.post("http://localhost:5000/api/exjobbads", { ...form, companyId });
       setMessage({ type: "success", text: "Exjobb ad submitted for review!" });
       setForm({
-        title: "", points: 30, location: "", programs: [], numStudents: 1, imageUrl: "", description: ""
+        title: "", points: 30, location: "", programs: [], numStudents: 1, imageUrl: "", description: "", contactEmail: ""
       });
     } catch (err: any) {
       setMessage({ type: "danger", text: err?.response?.data?.message || "Failed to create ad" });
@@ -42,7 +43,7 @@ export default function ExjobbAdForm({ companyId }: { companyId: number }) {
     }
   };
 
-  return (
+return (
     <Form onSubmit={handleSubmit} style={{ maxWidth: 500, margin: "2rem auto" }}>
       <h2>Create Exjobb Ad</h2>
       {message && <Alert variant={message.type}>{message.text}</Alert>}
@@ -75,6 +76,16 @@ export default function ExjobbAdForm({ companyId }: { companyId: number }) {
       <Form.Group className="mb-3">
         <Form.Label>Image URL (optional)</Form.Label>
         <Form.Control name="imageUrl" value={form.imageUrl} onChange={handleChange} />
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Contact Email</Form.Label>
+        <Form.Control
+          type="email"
+          name="contactEmail"
+          value={form.contactEmail}
+          onChange={handleChange}
+          required
+        />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Detailed Description</Form.Label>

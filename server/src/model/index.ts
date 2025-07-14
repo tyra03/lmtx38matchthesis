@@ -1,7 +1,8 @@
 import { Sequelize } from "sequelize";
 import { User } from "./User";
-export { User };
+import { ApprovedCompanyEmail } from "./ApprovedCompanyEmail";
 
+export { User, ApprovedCompanyEmail };
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -16,3 +17,4 @@ export const sequelize = new Sequelize(
     logging: false,
   }
 );
+

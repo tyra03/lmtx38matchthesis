@@ -10,7 +10,8 @@ export interface ExjobbAdAttributes {
   numStudents: number;
   imageUrl?: string;
   description: string;
-  companyId: number;     // FK to User (company)
+  contactEmail: string;
+  companyId?: number;     // FK to User (company)
   status: "pending" | "accepted" | "rejected";
 }
 
@@ -26,7 +27,8 @@ export class ExjobbAd extends Model<ExjobbAdAttributes, ExjobbAdCreationAttribut
   public numStudents!: number;
   public imageUrl?: string;
   public description!: string;
-  public companyId!: number;
+  public contactEmail!: string;
+  public companyId?: number;
   public status!: "pending" | "accepted" | "rejected";
 }
 
@@ -40,7 +42,8 @@ ExjobbAd.init(
     numStudents: { type: DataTypes.INTEGER, allowNull: false },
     imageUrl: { type: DataTypes.STRING, allowNull: true },
     description: { type: DataTypes.TEXT, allowNull: false },
-    companyId: { type: DataTypes.INTEGER, allowNull: false },
+    contactEmail: { type: DataTypes.STRING, allowNull: false },
+    companyId: { type: DataTypes.INTEGER, allowNull: true },
     status: { type: DataTypes.ENUM("pending", "accepted", "rejected"), defaultValue: "pending" }
   },
   {
