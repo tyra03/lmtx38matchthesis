@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import { sequelize } from "./db";
+import { sequelize } from ".";
 
 export interface ExjobbAdAttributes {
   id: number;
@@ -12,7 +12,7 @@ export interface ExjobbAdAttributes {
   description: string;
   contactEmail: string;
   companyId?: number;     // FK to User (company)
-  status: "pending" | "accepted" | "rejected";
+  status: "pending" | "approved" | "rejected";
 }
 
 interface ExjobbAdCreationAttributes extends Optional<ExjobbAdAttributes, "id" | "imageUrl" | "status"> {}
@@ -29,7 +29,7 @@ export class ExjobbAd extends Model<ExjobbAdAttributes, ExjobbAdCreationAttribut
   public description!: string;
   public contactEmail!: string;
   public companyId?: number;
-  public status!: "pending" | "accepted" | "rejected";
+  public status!: "pending" | "approved" | "rejected";
 }
 
 ExjobbAd.init(
@@ -44,7 +44,7 @@ ExjobbAd.init(
     description: { type: DataTypes.TEXT, allowNull: false },
     contactEmail: { type: DataTypes.STRING, allowNull: false },
     companyId: { type: DataTypes.INTEGER, allowNull: true },
-    status: { type: DataTypes.ENUM("pending", "accepted", "rejected"), defaultValue: "pending" }
+    status: { type: DataTypes.ENUM("pending", "approved", "rejected"), defaultValue: "pending" }
   },
   {
     sequelize,

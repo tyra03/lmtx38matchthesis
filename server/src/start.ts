@@ -6,6 +6,8 @@ import adminRouter from "./router/adminRouter";
 import companyRouter from "./router/companyRouter";
 import { sequelize } from "./model";
 import { ensureDefaultAdmin } from "./service/adminService";
+import { migrateAdStatuses } from "./service/exjobbAdService";
+
 import path from "path";
 
 const app = express();
@@ -22,6 +24,7 @@ app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
 // Sync DB before starting server
 sequelize.sync({ alter: true }).then(async () => {
   console.log("Database synced");
+  await migrateAdStatuses();
   await ensureDefaultAdmin();
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

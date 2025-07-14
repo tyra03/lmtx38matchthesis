@@ -15,7 +15,7 @@ export async function createExjobbAd(
   return ad.toJSON();
 }
 
-export async function updateAdStatus(adId: number, status: "accepted" | "rejected", adminId: number) {
+export async function updateAdStatus(adId: number, status: "approved" | "rejected", adminId: number) {
   const admin = await User.findByPk(adminId);
   if (!admin || admin.role !== "admin") return null;
   const ad = await ExjobbAd.findByPk(adId);
@@ -25,11 +25,18 @@ export async function updateAdStatus(adId: number, status: "accepted" | "rejecte
   return ad.toJSON();
 }
 
-export async function getAcceptedAds() {
-  return await ExjobbAd.findAll({ where: { status: "accepted" } });
+export async function getApprovedAds() {
+  return await ExjobbAd.findAll({ where: { status: "approved" } });
 }
 
 export async function getPendingAds() {
  const ads = await ExjobbAd.findAll({ where: { status: "pending" } });
  return ads.map((ad) => ad.toJSON());
+}
+
+export async function migrateAdStatuses() {
+  await ExjobbAd.update(
+    { status: "approved" },
+    { where: { status: "accepted" } }
+  );
 }

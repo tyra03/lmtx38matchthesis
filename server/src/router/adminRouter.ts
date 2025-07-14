@@ -61,7 +61,7 @@ router.patch("/ads/:id/status", requireAdmin, async (req: Request, res: Response
   const adId = parseInt(req.params.id, 10);
   if (isNaN(adId)) return res.status(400).json({ message: "Invalid ad id" });
   const { status } = req.body;
-  if (status !== "accepted" && status !== "rejected") {
+  if (status !== "approved" && status !== "rejected") {
     return res.status(400).json({ message: "Invalid status" });
   }
 

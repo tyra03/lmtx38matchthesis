@@ -37,7 +37,7 @@ export default function adminDashboard() {
     try {
       await axios.patch(
         `http://localhost:5000/api/admin/ads/${id}/status`,
-        { status: "accepted" },
+        { status: "approved" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAds((prev) => prev.filter((ad) => ad.id !== id));
