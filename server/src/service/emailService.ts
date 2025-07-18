@@ -21,7 +21,10 @@ export async function sendApprovalEmail(to: string, token: string) {
     to,
     subject: "Ad Approved",
     text:
-      `Your exjobb ad has been approved. Please register a company account to manage it using the following link: ${link}`,  });
+      `Your exjobb ad has been approved.\n` +
+      `Register a company account using this link: ${link}\n` +
+      `Registration token: ${token}`,
+  });
 }
 
 export async function sendRejectionEmail(to: string) {
