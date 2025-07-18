@@ -44,6 +44,7 @@ router.post("/login", async (req: Request, res: Response) => {
       return res.status(500).json({ message: "Server misconfiguration: JWT_SECRET missing" });
     }
     const token = jwt.sign({ userId: company.id, role: "company" }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
     return res.json({ company, token });
   } catch (err) {
     console.error("Company login error:", err);

@@ -20,6 +20,9 @@ export default function CompanyLoginForm() {
         password,
       });
       localStorage.setItem("token", res.data.token);
+      if (res.data.company?.id) {
+        localStorage.setItem("companyId", String(res.data.company.id));
+      }
       setMessage({ type: "success", text: "Login successful!" });
       navigate("/company/exjobbads/create");
     } catch (err: any) {

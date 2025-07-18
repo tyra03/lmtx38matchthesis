@@ -3,7 +3,9 @@ import axios from "axios";
 import { Form, Button, Alert } from "react-bootstrap";
 import { CHALMERS_PROGRAMS } from "../../chalmersPrograms";
 
-export default function ExjobbAdForm({ companyId }: { companyId: number }) {
+export default function ExjobbAdForm() {
+  const storedId = localStorage.getItem("companyId");
+  const companyId = storedId ? parseInt(storedId, 10) : undefined;  
   const [form, setForm] = useState({
     title: "",
     points: 30,
