@@ -9,12 +9,12 @@ dotenv.config();
 const router = express.Router();
 
 router.post("/register", async (req: Request, res: Response) => {
-  const { name, phone, email, password, companyName } = req.body;
-  if (!name || !phone || !email || !password || !companyName) {
+  const { name, phone, email, password, companyName, token } = req.body;
+  if (!name || !phone || !email || !password || !companyName || !token) {
     return res.status(400).json({ message: "Missing fields" });
   }
   try {
-    const approved = await ApprovedCompanyEmail.findOne({ where: { email } });
+    const approved = await ApprovedCompanyEmail.findOne({ where: { email, token } });
     if (!approved) {
       return res.status(403).json({ message: "Email not approved for registration" });
     }
@@ -22,6 +22,7 @@ router.post("/register", async (req: Request, res: Response) => {
     if (!company) {
       return res.status(409).json({ message: "Phone or email already exists" });
     }
+    await approved.destroy();
     return res.status(201).json(company);
   } catch (err) {
     return res.status(500).json({ message: "Server error" });

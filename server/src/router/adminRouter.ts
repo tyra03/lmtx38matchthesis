@@ -4,8 +4,10 @@ import dotenv from "dotenv";
 import { getPendingAds, updateAdStatus } from "../service/exjobbAdService";
 import { verifyAdminLogin } from "../service/adminService";
 import { ExjobbAd } from "../model/exjobbAd";
-import { User, ApprovedCompanyEmail } from "../model";
+import { ApprovedCompanyEmail } from "../model";
 import { sendApprovalEmail, sendRejectionEmail } from "../service/emailService";
+import crypto from "crypto";
+
 dotenv.config();
 
 const router = express.Router();
@@ -72,14 +74,13 @@ router.patch("/ads/:id/status", requireAdmin, async (req: Request, res: Response
 
     const adRecord = await ExjobbAd.findByPk(adId);
     if (adRecord) {
-      const company = await User.findByPk(adRecord.companyId);
-      if (company) {
-        if (status === "approved") {
-          await ApprovedCompanyEmail.create({ email: company.email});
-          await sendApprovalEmail(company.email);
-        } else {
-          await sendRejectionEmail(company.email);
-        }
+      const email = adRecord.contactEmail;
+      if (status === "approved") {
+        const token = crypto.randomBytes(32).toString("hex");
+          await ApprovedCompanyEmail.create({ email, token });
+          await sendApprovalEmail(email, token);
+      } else {
+        await sendRejectionEmail(email);
       }
     }
     res.json(updated);

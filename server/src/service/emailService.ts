@@ -13,15 +13,15 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export async function sendApprovalEmail(to: string) {
+export async function sendApprovalEmail(to: string, token: string) {
   if (!process.env.SMTP_FROM) return;
+  const link = `${process.env.FRONTEND_BASE_URL || ""}/company/register?token=${token}`;
   await transporter.sendMail({
     from: process.env.SMTP_FROM,
     to,
     subject: "Ad Approved",
     text:
-      "Your exjobb ad has been approved. Please register a company account to manage it.",
-  });
+      `Your exjobb ad has been approved. Please register a company account to manage it using the following link: ${link}`,  });
 }
 
 export async function sendRejectionEmail(to: string) {

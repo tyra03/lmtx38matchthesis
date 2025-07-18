@@ -4,6 +4,7 @@ import { sequelize } from ".";
 export interface ApprovedCompanyEmailAttributes {
   id: number;
   email: string;
+  token?: string | null;
 }
 
 interface ApprovedCompanyEmailCreationAttributes extends Optional<ApprovedCompanyEmailAttributes, "id"> {}
@@ -11,6 +12,7 @@ interface ApprovedCompanyEmailCreationAttributes extends Optional<ApprovedCompan
 export class ApprovedCompanyEmail extends Model<ApprovedCompanyEmailAttributes, ApprovedCompanyEmailCreationAttributes> implements ApprovedCompanyEmailAttributes {
   public id!: number;
   public email!: string;
+  public token!: string | null;
 }
 
 ApprovedCompanyEmail.init(
@@ -23,6 +25,11 @@ ApprovedCompanyEmail.init(
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
+    },
+    token: {
+      type: DataTypes.STRING,
+      allowNull: true,
       unique: true,
     },
   },
