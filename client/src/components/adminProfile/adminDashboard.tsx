@@ -19,6 +19,10 @@ export default function adminDashboard() {
   const [ads, setAds] = useState<ExjobbAd[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [message, setMessage] = useState<
+    { type: "success" | "danger"; text: string } | null
+  >(null);
+
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
@@ -47,9 +51,13 @@ export default function adminDashboard() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAds((prev) => prev.filter((ad) => ad.id !== id));
+      setMessage({ type: "success", text: "Ad approved" });
+      setTimeout(() => setMessage(null), 3000);
     } catch (err: any) {
-      alert(err?.response?.data?.message || "Failed to approve ad");
-    }
+      setMessage({
+        type: "danger",
+        text: err?.response?.data?.message || "Failed to approve ad",
+      });    }
   };
 
   const rejectAd = async (id: number) => {
@@ -60,8 +68,13 @@ export default function adminDashboard() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAds((prev) => prev.filter((ad) => ad.id !== id));
+      setMessage({ type: "success", text: "Ad rejected" });
+      setTimeout(() => setMessage(null), 3000);
     } catch (err: any) {
-      alert(err?.response?.data?.message || "Failed to reject ad");
+      setMessage({
+        type: "danger",
+        text: err?.response?.data?.message || "Failed to reject ad",
+      });
     }
   };
 
@@ -72,6 +85,16 @@ export default function adminDashboard() {
   return (
     <div style={{ maxWidth: 600, margin: "2rem auto" }}>
       <h2>Pending Exjobb Ads</h2>
+      {message && (
+        <Alert
+          variant={message.type}
+          onClose={() => setMessage(null)}
+          dismissible
+          className="mt-3"
+        >
+          {message.text}
+        </Alert>
+      )}
       {ads.length === 0 && <p>No pending ads</p>}
       {ads.map((ad) => (
         <Card key={ad.id} className="mb-3">

@@ -77,8 +77,8 @@ router.patch("/ads/:id/status", requireAdmin, async (req: Request, res: Response
       const email = adRecord.contactEmail;
       if (status === "approved") {
         const token = crypto.randomBytes(32).toString("hex");
-          await ApprovedCompanyEmail.create({ email, token });
-          await sendApprovalEmail(email, token);
+        await ApprovedCompanyEmail.upsert({ email, token });
+        await sendApprovalEmail(email, token);
       } else {
         await sendRejectionEmail(email);
       }
