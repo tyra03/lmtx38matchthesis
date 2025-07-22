@@ -1,6 +1,7 @@
 import { User } from "../model/User";
 import bcrypt from "bcrypt";
 import { Op } from "sequelize";
+import { ExjobbAd } from "../model/exjobbAd";
 
 export async function createStudent(data: { name: string; phone: string; email: string; program: string; password: string }) {
   // Check for existing phone or email
@@ -80,4 +81,32 @@ export async function getStudentsByPrograms(programs: string[]) {
   });
   return students.map((s) => s.toJSON());
 
+}
+
+export async function getStudentsForAd(adId: number) {
+  const ad = await ExjobbAd.findByPk(adId);
+  if (!ad) return null;
+
+  const students = await User.findAll({
+    where: {
+      role: "student",
+      program: { [Op.in]: ad.programs },
+    },
+  });
+
+  const keywords = `${ad.title} ${ad.description}`
+    .toLowerCase()
+    .match(/\b\w+\b/g) || [];
+
+  const filtered = students.filter((student) => {
+    if (!student.description) return false;
+    const desc = student.description.toLowerCase();
+    return keywords.some((kw) => desc.includes(kw));
+  });
+
+  return filtered.map((s) => {
+    const json = s.toJSON() as any;
+    delete json.password;
+    return json;
+  });
 }

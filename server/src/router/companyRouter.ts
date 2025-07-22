@@ -1,13 +1,31 @@
 import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { createCompany, verifyCompanyLogin, updateCompanyPassword } from "../service/companyService";
+import { verifyCompanyLogin, updateCompanyPassword, createCompany } from "../service/companyService";
 import { authenticateJWT, requireCompany, AuthRequest } from "../middleware/auth";
-import { getAllStudents } from "../service/studentService";
+import { getStudentsByPrograms } from "../service/studentService";
+import { getAdsForCompany, getStudentsForAd } from "../service/exjobbAdService";
 import { User } from "../model";
+import { ExjobbAd } from "../model/exjobbAd";
 
 dotenv.config();
 const router = express.Router();
+
+router.post("/register", async (req: Request, res: Response) => {
+  const { name, phone, email, password, companyName } = req.body;
+  if (!name || !phone || !email || !password || !companyName) {
+    return res.status(400).json({ message: "Missing fields" });
+  }
+  try {
+    const company = await createCompany({ name, phone, email, password, companyName });
+    if (!company) {
+      return res.status(409).json({ message: "Phone or email already exists" });
+    }
+    return res.status(201).json(company);
+  } catch (err) {
+    return res.status(500).json({ message: "Server error" });
+  }
+});
 
 router.post("/login", async (req: Request, res: Response) => {
   const { identifier, password } = req.body;
@@ -45,6 +63,16 @@ router.get("/me", authenticateJWT, requireCompany, async (req: AuthRequest, res:
   }
 });
 
+router.get("/me/ads", authenticateJWT, requireCompany, async (req: AuthRequest, res: Response) => {
+  try {
+    const ads = await getAdsForCompany(req.user!.userId);
+    res.json(ads);
+  } catch (err) {
+    console.error("Error fetching company ads:", err);
+    res.status(500).json({ message: "Failed to retrieve ads" });
+  }
+});
+
 router.patch("/me/password", authenticateJWT, requireCompany, async (req: AuthRequest, res: Response) => {
     const { currentPassword, newPassword } = req.body;
     if (!currentPassword || !newPassword) {
@@ -70,14 +98,37 @@ router.patch("/me/password", authenticateJWT, requireCompany, async (req: AuthRe
       }
 });
 
-router.get("/students", authenticateJWT, requireCompany, async (_req: AuthRequest, res: Response) => {
+router.get("/students", authenticateJWT, requireCompany, async (req: AuthRequest, res: Response) => {
   try {
-    const students = await getAllStudents();
-    res.json(students);
+    const companyId = req.user!.userId;
+    const ads = await ExjobbAd.findAll({ where: { companyId, status: "approved" } });
+
+    const programs = Array.from(new Set(ads.flatMap((ad) => ad.programs)));
+
+    const students = programs.length > 0 ? await getStudentsByPrograms(programs) : [];    res.json(students);
   } catch (err) {
     console.error("Error fetching students:", err);
     res.status(500).json({ message: "Failed to retrieve students" });
-  } 
+  }
+});
+
+router.get("/ads/:id/students", authenticateJWT, requireCompany, async (req: AuthRequest, res: Response) => {
+  const adId = parseInt(req.params.id, 10);
+  if (isNaN(adId)) {
+    return res.status(400).json({ message: "Invalid ad id" });
+  }
+  try {
+    const ad = await ExjobbAd.findByPk(adId);
+    if (!ad) return res.status(404).json({ message: "Ad not found" });
+    if (ad.companyId !== req.user!.userId) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+    const students = await getStudentsForAd(adId);
+    res.json(students);
+  } catch (err) {
+    console.error("Error fetching students for ad:", err);
+    res.status(500).json({ message: "Failed to retrieve students" });
+}   
 });
 
 export default router;

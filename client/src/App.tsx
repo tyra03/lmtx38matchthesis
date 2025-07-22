@@ -9,7 +9,7 @@ import ChangeCompanyPassword from "./components/companyProfile/changePassword";
 import CompanyPage from "./components/companyProfile/companyPage";
 import StudentDashboard from "./components/studentProfile/studentCard";
 import EditDescription from "./components/studentProfile/editDescription";
-import EditProfile from "./components/studentProfile/editDescription";
+import EditProfile from "./components/studentProfile/editProfile";
 import UploadImage from "./components/studentProfile/uploadImage";
 import StudentPage from "./components/studentProfile/studentPage";
 import AdminLoginForm from "./components/adminProfile/adminLogin";

@@ -1,6 +1,8 @@
  // src/service/exjobbAdService.ts
 import { ExjobbAd, ExjobbAdAttributes } from "../model/exjobbAd";
 import { User } from "../model/User";
+import { ExjobbAction } from "../model/exjobbAction";
+
 
 export async function createExjobbAd(
   data: Omit<ExjobbAdAttributes, "id" | "status"> & { companyId?: number | null }) {
@@ -38,4 +40,20 @@ export async function migrateAdStatuses() {
     { status: "approved" },
     { where: { status: "accepted" } }
   );
+}
+
+export async function getAdsForCompany(companyId: number) {
+  const ads = await ExjobbAd.findAll({ where: { companyId } });
+  return ads.map((a) => a.toJSON());
+}
+
+export async function getStudentsForAd(adId: number) {
+  const actions = await ExjobbAction.findAll({ where: { adId } });
+  const studentIds = Array.from(new Set(actions.map((a) => a.userId)));
+  if (studentIds.length === 0) return [];
+  const students = await User.findAll({
+    where: { id: studentIds, role: "student" },
+    attributes: { exclude: ["password"] },
+  });
+  return students.map((s) => s.toJSON());
 }
