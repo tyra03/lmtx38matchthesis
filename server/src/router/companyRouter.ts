@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { createCompany, verifyCompanyLogin, updateCompanyPassword } from "../service/companyService";
 import { authenticateJWT, requireCompany, AuthRequest } from "../middleware/auth";
+import { getAllStudents } from "../service/studentService";
 import { User } from "../model";
 
 dotenv.config();
@@ -66,7 +67,17 @@ router.patch("/me/password", authenticateJWT, requireCompany, async (req: AuthRe
     } catch (err) {
       console.error("Error updating company password:", err);
       res.status(500).json({ message: "Failed to update password" });
-    }
+      }
+});
+
+router.get("/students", authenticateJWT, requireCompany, async (_req: AuthRequest, res: Response) => {
+  try {
+    const students = await getAllStudents();
+    res.json(students);
+  } catch (err) {
+    console.error("Error fetching students:", err);
+    res.status(500).json({ message: "Failed to retrieve students" });
+  } 
 });
 
 export default router;

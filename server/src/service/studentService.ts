@@ -60,3 +60,11 @@ export async function updateStudentInfo(
   delete updated.password;
   return updated;
 }
+
+export async function getAllStudents() {
+  const students = await User.findAll({
+    where: { role: "student" },
+    attributes: { exclude: ["password"] },
+  });
+  return students.map((s) => s.toJSON());
+}

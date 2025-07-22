@@ -3,7 +3,6 @@ import MainMenuPage from "./components/mainMenu";
 import StudentRegisterForm from "./components/studentProfile/studentRegistration";
 import StudentLoginForm from "./components/studentProfile/studentLogin";
 import CompanyLoginForm from "./components/companyProfile/companyLogin";
-import CompanyRegisterForm from "./components/companyProfile/companyRegistration";
 import ExjobbAdForm from "./components/companyProfile/exjobbAd";
 import ExjobbAdCards from "./components/companyProfile/displayExjobbAd";
 import ChangeCompanyPassword from "./components/companyProfile/changePassword";
@@ -16,6 +15,7 @@ import StudentPage from "./components/studentProfile/studentPage";
 import AdminLoginForm from "./components/adminProfile/adminLogin";
 import AdminPage from "./components/adminProfile/adminPage";
 import AdminDashboard from "./components/adminProfile/adminDashboard";
+import CompanyDashboard from "./components/companyProfile/companyDashboard";
 
 export default function App() {
   return (
@@ -26,13 +26,13 @@ export default function App() {
             <Route path="/student/login" element={<StudentLoginForm />} />
             <Route path="/admin/login" element={<AdminLoginForm />} />
             <Route path="/company/login" element={<CompanyLoginForm />} />
-            <Route path="/company/register" element={<CompanyRegisterForm />} />
 
             <Route path="/admin" element={<AdminPage />}>
               <Route path="dashboard" element={<AdminDashboard />} />
             </Route>
             
             <Route path="/company" element={<CompanyPage />}>
+              <Route path="dashboard" element={<CompanyDashboard />} />
               <Route path="change-password" element={<ChangeCompanyPassword />} />
               <Route path="exjobbads/create" element={<ExjobbAdForm />} />
             </Route>

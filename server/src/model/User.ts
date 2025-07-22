@@ -7,6 +7,7 @@ export interface UserAttributes {
   phone: string;
   email: string;
   program?: string; // only for students
+  description?: string; // optional bio for students
   password: string;
   role: "student" | "company" | "admin";
   companyName?: string;
@@ -21,6 +22,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public phone!: string;
   public email!: string;
   public program?: string;
+  public description?: string;
   public password!: string;
   public role!: "student" | "company" | "admin";
   public companyName?: string;
@@ -51,10 +53,15 @@ User.init(
       unique: true 
     },
 
-    program: { 
-      type: DataTypes.STRING, 
-      allowNull: true 
+    program: {
+      type: DataTypes.STRING,
+      allowNull: true
     }, // nullable for company/admin
+
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
 
     password: { 
       type: DataTypes.STRING, 
