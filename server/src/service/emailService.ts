@@ -13,22 +13,21 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export async function sendApprovalEmail(to: string, token: string) {
+export async function sendApprovalEmail(to: string, password: string) {
   const host = process.env.SMTP_HOST;
   if (!process.env.SMTP_FROM || !host || host === "your_smtp_host") {
     console.warn("SMTP settings missing, skipping approval email");
     return;
   }
   try {
-    const link = `${process.env.FRONTEND_BASE_URL || ""}/company/register?token=${token}`;
     await transporter.sendMail({
       from: process.env.SMTP_FROM,
       to,
       subject: "Ad Approved",
       text:
         `Your exjobb ad has been approved.\n` +
-        `Register a company account using this link: ${link}\n` +
-        `Registration token: ${token}`,
+        `An account has been created for you.\n` +
+        `Temporary password: ${password}`,
     });
   } catch (err) {
     console.error("Failed to send approval email", err);

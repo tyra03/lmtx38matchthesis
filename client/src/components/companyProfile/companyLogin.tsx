@@ -24,7 +24,7 @@ export default function CompanyLoginForm() {
         localStorage.setItem("companyId", String(res.data.company.id));
       }
       setMessage({ type: "success", text: "Login successful!" });
-      navigate("/company/exjobbads/create");
+      navigate("/company/dashboard");
     } catch (err: any) {
       setMessage({ type: "danger", text: err?.response?.data?.message || "Login failed" });
     } finally {

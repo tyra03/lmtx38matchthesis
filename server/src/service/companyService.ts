@@ -39,4 +39,19 @@ export async function verifyCompanyLogin(identifier: string, password: string) {
   if (!match) return null;
   const { id, name, email, phone, companyName } = company;
   return { id, name, email, phone, companyName };
+
+}
+
+export async function updateCompanyPassword(
+  companyId: number,
+  currentPassword: string,
+  newPassword: string,
+) {
+  const company = await User.findByPk(companyId);
+  if (!company || company.role !== "company") return null;
+  const match = await bcrypt.compare(currentPassword, company.password);
+  if (!match) return false;
+  const hashed = await bcrypt.hash(newPassword, 10);
+  await company.update({ password: hashed });
+  return true;  
 }

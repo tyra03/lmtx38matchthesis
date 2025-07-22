@@ -5,7 +5,6 @@ import { User } from "../model/User";
 export async function createExjobbAd(
   data: Omit<ExjobbAdAttributes, "id" | "status"> & { companyId?: number | null }) {
   // companyId must correspond to a user with role "company"
-  const company = await User.findByPk(data.companyId);
   if (data.companyId) {
     const company = await User.findByPk(data.companyId);
     if (!company || company.role !== "company") return null;

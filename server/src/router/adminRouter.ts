@@ -4,9 +4,10 @@ import dotenv from "dotenv";
 import { getPendingAds, updateAdStatus } from "../service/exjobbAdService";
 import { verifyAdminLogin } from "../service/adminService";
 import { ExjobbAd } from "../model/exjobbAd";
-import { ApprovedCompanyEmail } from "../model";
+import { User } from "../model/User";
 import { sendApprovalEmail, sendRejectionEmail } from "../service/emailService";
 import crypto from "crypto";
+import bcrypt from "bcrypt";
 
 dotenv.config();
 
@@ -76,10 +77,18 @@ router.patch("/ads/:id/status", requireAdmin, async (req: Request, res: Response
     if (adRecord) {
       const email = adRecord.contactEmail;
       if (status === "approved") {
-        const token = crypto.randomBytes(32).toString("hex");
-        await ApprovedCompanyEmail.upsert({ email, token });
+        const plainPassword = crypto.randomBytes(8).toString("hex");
+        const hashed = await bcrypt.hash(plainPassword, 10);
+        await User.create({
+          name: "",
+          phone: crypto.randomBytes(6).toString("hex"),
+          email,
+          password: hashed,
+          role: "company",
+        });
+        
         try {
-          await sendApprovalEmail(email, token);
+          await sendApprovalEmail(email, plainPassword);
         } catch (mailErr) {
           console.error("Failed to send approval email", mailErr);
         }
