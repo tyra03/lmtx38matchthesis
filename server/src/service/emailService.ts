@@ -11,6 +11,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
+  // Disable certificate verification for self-signed certificates.
+  // Only use this when the SMTP server is trusted.
+  tls: { rejectUnauthorized: false },
 });
 
 export async function sendApprovalEmail(to: string, password: string) {
