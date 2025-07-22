@@ -38,6 +38,9 @@ export default function CompanyDashboard() {
   return (
     <div style={{ margin: "2rem" }}>
       <h2>Student Profiles</h2>
+      {students.length === 0 ? (
+        <p>No matching students found.</p>
+      ) : (
       <Table striped bordered hover responsive>
         <thead>
           <tr>
@@ -56,6 +59,7 @@ export default function CompanyDashboard() {
           ))}
         </tbody>
       </Table>
+      )}
     </div>
   );
 }

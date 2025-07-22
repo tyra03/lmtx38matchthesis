@@ -77,21 +77,31 @@ router.patch("/ads/:id/status", requireAdmin, async (req: Request, res: Response
     if (adRecord) {
       const email = adRecord.contactEmail;
       if (status === "approved") {
-        const plainPassword = crypto.randomBytes(8).toString("hex");
-        const hashed = await bcrypt.hash(plainPassword, 10);
-        await User.create({
-          name: "",
-          phone: crypto.randomBytes(6).toString("hex"),
-          email,
-          password: hashed,
-          role: "company",
-        });
-        
-        try {
-          await sendApprovalEmail(email, plainPassword);
-        } catch (mailErr) {
-          console.error("Failed to send approval email", mailErr);
+        const existingUser = await User.findOne({ where: { email } });
+        let plainPassword: string | null = null;
+
+        if (existingUser) {
+          // Reuse the existing user, but rotate the password so we can send it in the email
+          plainPassword = crypto.randomBytes(8).toString("hex");
+          const hashed = await bcrypt.hash(plainPassword, 10);
+          await existingUser.update({ password: hashed });
+        } else {
+          plainPassword = crypto.randomBytes(8).toString("hex");
+          const hashed = await bcrypt.hash(plainPassword, 10);
+          await User.create({
+            name: "",
+            phone: crypto.randomBytes(6).toString("hex"),
+            email,
+            password: hashed,
+            role: "company",
+          });
         }
+          try {
+            await sendApprovalEmail(email, plainPassword);
+          } catch (mailErr) {
+            console.error("Failed to send approval email", mailErr);
+          }
+        
       } else {
         try {
           await sendRejectionEmail(email);

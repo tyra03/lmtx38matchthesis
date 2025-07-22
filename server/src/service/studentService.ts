@@ -68,3 +68,16 @@ export async function getAllStudents() {
   });
   return students.map((s) => s.toJSON());
 }
+
+export async function getStudentsByPrograms(programs: string[]) {
+  if (programs.length === 0) return [] as any[];
+  const students = await User.findAll({
+    where: {
+      role: "student",
+      program: { [Op.in]: programs },
+    },
+    attributes: { exclude: ["password"] },
+  });
+  return students.map((s) => s.toJSON());
+
+}

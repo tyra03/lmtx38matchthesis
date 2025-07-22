@@ -34,8 +34,8 @@ export default function App() {
             <Route path="/company" element={<CompanyPage />}>
               <Route path="dashboard" element={<CompanyDashboard />} />
               <Route path="change-password" element={<ChangeCompanyPassword />} />
-              <Route path="exjobbads/create" element={<ExjobbAdForm />} />
             </Route>
+            <Route path="/company/exjobbads/create" element={<ExjobbAdForm />} />
 
             <Route path="/student" element={<StudentPage />}>
               <Route path="dashboard" element={<StudentDashboard />} />
