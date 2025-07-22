@@ -78,9 +78,17 @@ router.patch("/ads/:id/status", requireAdmin, async (req: Request, res: Response
       if (status === "approved") {
         const token = crypto.randomBytes(32).toString("hex");
         await ApprovedCompanyEmail.upsert({ email, token });
-        await sendApprovalEmail(email, token);
+        try {
+          await sendApprovalEmail(email, token);
+        } catch (mailErr) {
+          console.error("Failed to send approval email", mailErr);
+        }
       } else {
-        await sendRejectionEmail(email);
+        try {
+          await sendRejectionEmail(email);
+        } catch (mailErr) {
+          console.error("Failed to send rejection email", mailErr);
+        }
       }
     }
     res.json(updated);

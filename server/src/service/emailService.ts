@@ -14,25 +14,37 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function sendApprovalEmail(to: string, token: string) {
-  if (!process.env.SMTP_FROM) return;
-  const link = `${process.env.FRONTEND_BASE_URL || ""}/company/register?token=${token}`;
-  await transporter.sendMail({
-    from: process.env.SMTP_FROM,
-    to,
-    subject: "Ad Approved",
-    text:
-      `Your exjobb ad has been approved.\n` +
-      `Register a company account using this link: ${link}\n` +
-      `Registration token: ${token}`,
-  });
+  const host = process.env.SMTP_HOST;
+  if (!process.env.SMTP_FROM || !host || host === "your_smtp_host") {
+    console.warn("SMTP settings missing, skipping approval email");
+    return;
+  }
+  try {
+    const link = `${process.env.FRONTEND_BASE_URL || ""}/company/register?token=${token}`;
+    await transporter.sendMail({
+      from: process.env.SMTP_FROM,
+      to,
+      subject: "Ad Approved",
+      text:
+        `Your exjobb ad has been approved.\n` +
+        `Register a company account using this link: ${link}\n` +
+        `Registration token: ${token}`,
+    });
+  } catch (err) {
+    console.error("Failed to send approval email", err);
+  }
 }
 
 export async function sendRejectionEmail(to: string) {
-  if (!process.env.SMTP_FROM) return;
-  await transporter.sendMail({
-    from: process.env.SMTP_FROM,
-    to,
-    subject: "Ad Rejected",
-    text: "Unfortunately your exjobb ad was rejected. You are welcome to submit another advertisement.",
-  });
+  const host = process.env.SMTP_HOST;
+  if (!process.env.SMTP_FROM || !host || host === "your_smtp_host") {
+    console.warn("SMTP settings missing, skipping rejection email");
+    return;
+  }
+    await transporter.sendMail({
+      from: process.env.SMTP_FROM,
+      to,
+      subject: "Ad Rejected",
+      text: "Unfortunately your exjobb ad was rejected. You are welcome to submit another advertisement.",
+    });
 }
