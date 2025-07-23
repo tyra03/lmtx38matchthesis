@@ -79,16 +79,24 @@ router.patch("/ads/:id/status", requireAdmin, async (req: Request, res: Response
       if (status === "approved") {
         const existingUser = await User.findOne({ where: { email } });
         let plainPassword: string | null = null;
+        let user: User;
 
         if (existingUser) {
           // Reuse the existing user, but rotate the password so we can send it in the email
           plainPassword = crypto.randomBytes(8).toString("hex");
           const hashed = await bcrypt.hash(plainPassword, 10);
-          await existingUser.update({ password: hashed });
-        } else {
+          existingUser.password = hashed;
+          if (existingUser.role !== "company") {
+            existingUser.role = "company";
+          }
+          await existingUser.save();
+          user = existingUser;        
+        } 
+        
+        else {
           plainPassword = crypto.randomBytes(8).toString("hex");
           const hashed = await bcrypt.hash(plainPassword, 10);
-          await User.create({
+          user = await User.create({
             name: "",
             phone: crypto.randomBytes(6).toString("hex"),
             email,
@@ -96,6 +104,8 @@ router.patch("/ads/:id/status", requireAdmin, async (req: Request, res: Response
             role: "company",
           });
         }
+        adRecord.companyId = user.id;
+        await adRecord.save();
           try {
             await sendApprovalEmail(email, plainPassword);
           } catch (mailErr) {
