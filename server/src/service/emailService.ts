@@ -11,8 +11,6 @@ const transporter = nodemailer.createTransport({
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
-  // Disable certificate verification for self-signed certificates.
-  // Only use this when the SMTP server is trusted.
   tls: { rejectUnauthorized: false },
 });
 
@@ -28,8 +26,8 @@ export async function sendApprovalEmail(to: string, password: string) {
       to,
       subject: "Ad Approved",
       text:
-        `Your exjobb ad has been approved.\n` +
-        `An account has been created for you.\n` +
+        `Your exjobb ad at MatchThesis has been approved!\n` +
+        `An account has been created for you. You can now log in to your account using the email address used when creating the exjobb ad and the temporary password below.\n` +
         `Temporary password: ${password}`,
     });
   } catch (err) {

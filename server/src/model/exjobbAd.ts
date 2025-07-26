@@ -44,7 +44,7 @@ ExjobbAd.init(
     description: { type: DataTypes.TEXT, allowNull: false },
     contactEmail: { type: DataTypes.STRING, allowNull: false, defaultValue: "" },
     companyId: { type: DataTypes.INTEGER, allowNull: true },
-    status: { type: DataTypes.ENUM("pending", "approved", "rejected"), defaultValue: "pending" }
+    status: { type: DataTypes.ENUM("pending", "accepted", "rejected"), defaultValue: "pending" }
   },
   {
     sequelize,
