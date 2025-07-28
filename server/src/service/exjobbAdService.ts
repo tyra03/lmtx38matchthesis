@@ -36,10 +36,11 @@ export async function getPendingAds() {
 }
 
 export async function migrateAdStatuses() {
-  await ExjobbAd.update(
+  const [count] = await ExjobbAd.update(
     { status: "approved" },
     { where: { status: "accepted" } }
   );
+  return count;
 }
 
 export async function getAdsForCompany(companyId: number) {
