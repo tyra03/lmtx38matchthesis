@@ -1,9 +1,10 @@
 .exjobb-card-container {
   width: 100%;
-  max-width: 500px;
-  height: 400px;
+  max-width: 550px;
+  height: 480px;
   perspective: 1000px;
   margin: 0 auto;
+  position: relative;
 }
 
 .exjobb-card-inner {
@@ -37,7 +38,7 @@
 
 .exjobb-card-image {
   width: 100%;
-  height: 180px;
+  height: 220px;
   object-fit: cover;
   border-radius: 10px;
   border-bottom-left-radius: 0;
@@ -49,4 +50,17 @@
 .exjobb-card-back {
   background: #f8f8f8;
   transform: rotateY(180deg);
+}
+
+.exjobb-card-actions {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+.exjobb-card-text {
+  margin-bottom: 3rem;
 }

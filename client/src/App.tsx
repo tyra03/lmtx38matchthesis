@@ -11,6 +11,7 @@ import StudentDashboard from "./components/studentProfile/studentCard";
 import EditDescription from "./components/studentProfile/editDescription";
 import EditProfile from "./components/studentProfile/editProfile";
 import UploadImage from "./components/studentProfile/uploadImage";
+import FavoriteAds from "./components/studentProfile/favorites";
 import StudentPage from "./components/studentProfile/studentPage";
 import AdminLoginForm from "./components/adminProfile/adminLogin";
 import AdminPage from "./components/adminProfile/adminPage";
@@ -37,11 +38,12 @@ export default function App() {
             </Route>
             <Route path="/company/exjobbads/create" element={<ExjobbAdForm />} />
 
-            <Route path="/student" element={<StudentPage />}>
+            <Route path="/student" element={<StudentPage />}> 
               <Route path="dashboard" element={<StudentDashboard />} />
               <Route path="edit-profile" element={<EditProfile />} />
               <Route path="edit-description" element={<EditDescription />} />
               <Route path="upload-image" element={<UploadImage />} />
+              <Route path="favorites" element={<FavoriteAds />} />
               <Route path="exjobbads" element={<ExjobbAdCards />} />
             </Route>
       </Routes>

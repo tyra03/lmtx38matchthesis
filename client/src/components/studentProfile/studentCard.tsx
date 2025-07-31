@@ -11,7 +11,8 @@ import {
   Alert,
   Spinner,
 } from "react-bootstrap";
-import ProfileCard from "./previewCard";
+import previewCard from "./previewCard";
+import StudentPreviewCard from "./studentPreviewCard";
 import "../../css/cardImageNonPreview.css";
 
 export default function StudentDashboard() {
@@ -177,7 +178,7 @@ export default function StudentDashboard() {
               <Card.Body>
                 <h5 className="text-center mb-3">Profile Card Preview</h5>
                 <div className="d-flex justify-content-center">
-                  <ProfileCard
+                  <StudentPreviewCard
                     name={profile.name}
                     program={profile.program}
                     imageUrl={`http://localhost:5000${profile.imageUrl || ""}`}

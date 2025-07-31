@@ -58,3 +58,30 @@ export async function getStudentsForAd(adId: number) {
   });
   return students.map((s) => s.toJSON());
 }
+
+export async function createOrUpdateAction(
+  userId: number,
+  adId: number,
+  type: "like" | "favorite" | "dislike"
+) {
+  let action = await ExjobbAction.findOne({ where: { userId, adId } });
+  if (action) {
+    action.type = type;
+    await action.save();
+  } else {
+    action = await ExjobbAction.create({ userId, adId, type });
+  }
+  return action.toJSON();
+}
+
+export async function deleteAction(userId: number, adId: number) {
+  const count = await ExjobbAction.destroy({ where: { userId, adId } });
+  return count > 0;
+}
+
+export async function getFavoritesForUser(userId: number) {
+  const actions = await ExjobbAction.findAll({
+    where: { userId, type: "favorite" },
+  });
+  return actions.map((a) => a.adId);
+}

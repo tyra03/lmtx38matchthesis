@@ -8,7 +8,7 @@
 }
 
 .main-menu-container {
-  max-width: 900px;
+  max-width: 850px;
 }
 
 .menu-card {
@@ -18,17 +18,21 @@
 }
 
 .admin-link {
-  color: #000000;
+  color: #1825d9;
   font-size: 0.9rem;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 676px) {
   .main-menu-container {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 }
 
-.text-light mb-5 {
-    color:#000000
+.mb-5 {
+  margin: 1rem !important;
+}
+
+.text-light {
+  color: #494949 !important;
 }

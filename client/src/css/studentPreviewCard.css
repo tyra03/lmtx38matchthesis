@@ -1,24 +1,26 @@
-.card-container {
-  max-width: 300px;
+.student-card-container {
+  width: 100%;
+  max-width: 500px;
   min-height: 500px;
+  height: relative;
   perspective: 1000px;
+  margin: 0 auto;
 }
 
-.card-inner {
+.student-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  text-align: center;
   transition: transform 0.8s;
   transform-style: preserve-3d;
-  padding: 5px;
 }
 
-.card-container:hover .card-inner {
+.student-card-container:hover .student-card-inner {
   transform: rotateY(180deg);
 }
 
-.card-front, .card-back {
+.student-card-front,
+.student-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -26,34 +28,31 @@
   border: 1px solid #ddd;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  text-align: left;
+  background: #fff;
+  padding: 1rem;
 }
 
-.card-front {
-  background: white;
+.student-card-front {
   z-index: 2;
 }
 
-
-.card-image {
+.student-card-image {
   width: 100%;
-  height: 170px;         /* Same as your .no-image placeholder */
-  object-fit: cover;     /* Ensures the image always fills the container, cropping as needed */
+  height: 180px;
+  object-fit: cover;
   border-radius: 10px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  display: block;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   margin-bottom: 1rem;
   background: #eee;
 }
 
-
-.card-back {
+.student-card-back {
   background: #f8f8f8;
   transform: rotateY(180deg);
 }
 
-.no-image {
+.student-no-image {
   width: 100%;
   height: 200px;
   background: #ddd;

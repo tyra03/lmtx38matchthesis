@@ -5,6 +5,7 @@
     margin-right: 2rem; /* Matches preview card spacing */
     background: #fff;
 }
+
 .sidebar-card .nav-link {
     border-radius: 6px;
     margin-bottom: 0.3rem;
@@ -12,6 +13,6 @@
 }
 
 .sidebar-card {
-    min-height: 500px;
+    max-height: 450px;
     height: 100%;
 }
