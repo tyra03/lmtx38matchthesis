@@ -17,7 +17,7 @@ export default function MainMenuPage() {
         className="matchthesis-logo"
       />
 
-      <Container className="py-5">
+      <Container className="py-5 main-menu-container">
         <Row className="justify-content-center mb-4">
           <Col xs={12} md={8} lg={6}>
             <h1 className="text-center mb-4" style={{ fontWeight: 700, letterSpacing: 2 }}>
@@ -29,15 +29,15 @@ export default function MainMenuPage() {
           </Col>
         </Row>
         <Row className="justify-content-center">
-          <Col xs={12} md={4} className="mb-4">
-            <Card bg="dark" text="light" className="shadow-lg">
+          <Col xs={12} md={6} className="mb-4">
+            <Card className="shadow-lg menu-card">
               <Card.Body>
                 <Card.Title>Student</Card.Title>
                 <Card.Text>
                   Find and apply to exciting thesis projects at Chalmers. Register a new student account or log in to access your dashboard.
                 </Card.Text>
                 <Button
-                  variant="outline-light"
+                  variant="outline-dark"
                   className="w-100 mb-2"
                   onClick={() => navigate("/student/register")}
                 >
@@ -53,22 +53,22 @@ export default function MainMenuPage() {
               </Card.Body>
             </Card>
           </Col>
-          <Col xs={12} md={4} className="mb-4">
-            <Card bg="secondary" text="light" className="shadow-lg">
+          <Col xs={12} md={6} className="mb-4">
+            <Card className="shadow-lg menu-card">
               <Card.Body>
                 <Card.Title>Company</Card.Title>
                 <Card.Text>
-                  Submit thesis ads for students, or log in to manage your ads and view matched students (after approval).
+                  Submit thesis ads for students to view, or log in to manage your ads and view matched students (after approval).
                 </Card.Text>
                 <Button
-                  variant="outline-light"
+                  variant="outline-dark"
                   className="w-100 mb-2"
                   onClick={() => navigate("/company/exjobbads/create")}
                 >
                   Create Exjobb Ad
                 </Button>
                 <Button
-                  variant="dark"
+                  variant="secondary"
                   className="w-100"
                   onClick={() => navigate("/company/login")}
                 >
@@ -77,22 +77,10 @@ export default function MainMenuPage() {
               </Card.Body>
             </Card>
           </Col>
-          <Col xs={12} md={4} className="mb-4">
-            <Card bg="light" text="dark" className="shadow-lg">
-              <Card.Body>
-                <Card.Title>Admin</Card.Title>
-                <Card.Text>
-                  Review, accept, or reject company exjobb ads.
-                </Card.Text>
-                <Button
-                  variant="outline-dark"
-                  className="w-100"
-                  onClick={() => navigate("/admin/login")}
-                >
-                  Admin Login
-                </Button>
-              </Card.Body>
-            </Card>
+          </Row>
+        <Row className="justify-content-center mt-3">
+          <Col xs="auto">
+            <Button variant="link" className="admin-link" onClick={() => navigate("/admin/login")}>Admin Login</Button>
           </Col>
         </Row>
       </Container>

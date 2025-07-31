@@ -1,1 +1,34 @@
 
+.main-menu-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.main-menu-container {
+  max-width: 900px;
+}
+
+.menu-card {
+  background-color: rgb(237, 233, 233);
+  color: #000000 !important;
+  border: none !important;
+}
+
+.admin-link {
+  color: #000000;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 576px) {
+  .main-menu-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+.text-light mb-5 {
+    color:#000000
+}
