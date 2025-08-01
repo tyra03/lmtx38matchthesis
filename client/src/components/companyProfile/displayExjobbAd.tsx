@@ -31,8 +31,8 @@ export default function ExjobbAdCards() {
     const adId = ads[current].id;
     try {
       await axios.post(
-        `http://localhost:5000/api/exjobbads/${adId}/${type}`,
-        {},
+        "http://localhost:5000/api/exjobbads/actions",
+        { adId, type },
         token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
       );
     } catch (err) {

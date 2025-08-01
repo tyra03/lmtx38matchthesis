@@ -32,7 +32,7 @@ export default function FavoriteAds() {
         const id = userRes.data.id as number;
         setUserId(id);
         const favRes = await axios.get(
-          `http://localhost:5000/api/users/${id}/favorites`,
+          "http://localhost:5000/api/exjobbads/favorites",
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setAds(favRes.data);
@@ -59,11 +59,18 @@ export default function FavoriteAds() {
     try {
       const token = localStorage.getItem("token");
       const adId = ads[current].id;
-      await axios.post(
-        `http://localhost:5000/api/users/${userId}/actions`,
-        { adId, type },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      if (type === "unfavorite") {
+        await axios.delete(
+          `http://localhost:5000/api/exjobbads/actions/${adId}`,
+          token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
+        );
+      } else {
+        await axios.post(
+          "http://localhost:5000/api/exjobbads/actions",
+          { adId, type },
+          token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
+        );
+      }
       removeCurrent();
     } catch (err: any) {
       setError(err?.response?.data?.message || "Failed to update favorites.");

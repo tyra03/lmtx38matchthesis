@@ -83,5 +83,8 @@ export async function getFavoritesForUser(userId: number) {
   const actions = await ExjobbAction.findAll({
     where: { userId, type: "favorite" },
   });
-  return actions.map((a) => a.adId);
+  const adIds = actions.map((a) => a.adId);
+  if (adIds.length === 0) return [];
+  const ads = await ExjobbAd.findAll({ where: { id: adIds } });
+  return ads.map((ad) => ad.toJSON());
 }
