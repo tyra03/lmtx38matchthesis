@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, Card, Row, Col } from "react-bootstrap";
 import { CHALMERS_PROGRAMS } from "../../chalmersPrograms";
 
 export default function ExjobbAdForm() {
@@ -46,61 +46,98 @@ export default function ExjobbAdForm() {
   };
 
 return (
-    <Form onSubmit={handleSubmit} style={{ maxWidth: 500, margin: "2rem auto" }}>
-      <h2>Create Exjobb Ad</h2>
-      {message && <Alert variant={message.type}>{message.text}</Alert>}
-      <Form.Group className="mb-3">
-        <Form.Label>Title</Form.Label>
-        <Form.Control name="title" value={form.title} onChange={handleChange} required />
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Points (hp)</Form.Label>
-        <Form.Select name="points" value={form.points} onChange={handleChange}>
-          {[15, 30, 60].map(p => <option key={p} value={p}>{p}</option>)}
-        </Form.Select>
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Location</Form.Label>
-        <Form.Control name="location" value={form.location} onChange={handleChange} required />
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Educational Programs (hold Ctrl for multiple)</Form.Label>
-        <Form.Select name="programs" multiple value={form.programs} onChange={handleProgramsChange}>
-          {CHALMERS_PROGRAMS.map(p => <option key={p} value={p}>{p}</option>)}
-        </Form.Select>
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Number of Students</Form.Label>
-        <Form.Control
-          type="number" name="numStudents" min={1} max={10} value={form.numStudents} onChange={handleChange} required
-        />
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Image URL (optional)</Form.Label>
-        <Form.Control name="imageUrl" value={form.imageUrl} onChange={handleChange} />
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Contact Email</Form.Label>
-        <Form.Control
-          type="email"
-          name="contactEmail"
-          value={form.contactEmail}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Detailed Description</Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={5}
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
-      <Button type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit"}</Button>
-    </Form>
+    <Card className="shadow" style={{ maxWidth: 1000, margin: "4rem auto" }}>
+      <Card.Body>
+        <h3 className="mb-3">Create Exjobb Ad</h3>
+        <p className="text-muted">
+          Fill in the details below to publish your thesis advertisement. Your advertisement will be reviewed before it becomes visible to students. Once approved, it will appear on the student dashboard.
+        </p>
+        {message && <Alert variant={message.type}>{message.text}</Alert>}
+        <Form onSubmit={handleSubmit}>
+          <Row>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Title</Form.Label>
+                <Form.Control name="title" value={form.title} onChange={handleChange} required />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Points (hp)</Form.Label>
+                <Form.Select name="points" value={form.points} onChange={handleChange}>
+                  {[15, 30, 60].map(p => (
+                    <option key={p} value={p}>{p}</option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Location</Form.Label>
+                <Form.Control name="location" value={form.location} onChange={handleChange} required />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Number of Students</Form.Label>
+                <Form.Control
+                  type="number"
+                  name="numStudents"
+                  min={1}
+                  max={10}
+                  value={form.numStudents}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Form.Group className="mb-3">
+            <Form.Label>Educational Programs (hold Ctrl for multiple)</Form.Label>
+            <Form.Select name="programs" multiple value={form.programs} onChange={handleProgramsChange}>
+              {CHALMERS_PROGRAMS.map(p => (
+                <option key={p} value={p}>{p}</option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+          <Row>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Image URL (optional)</Form.Label>
+                <Form.Control name="imageUrl" value={form.imageUrl} onChange={handleChange} />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Contact Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="contactEmail"
+                  value={form.contactEmail}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Form.Group className="mb-3">
+            <Form.Label>Detailed Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={5}
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+          <Button type="submit" disabled={submitting}>
+            {submitting ? "Submitting..." : "Submit"}
+          </Button>
+        </Form>
+      </Card.Body>
+    </Card>
   );
 }
