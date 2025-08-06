@@ -3,14 +3,16 @@ import bcrypt from "bcrypt";
 import { Op } from "sequelize";
 import { ExjobbAd } from "../model/exjobbAd";
 
-export async function createStudent(data: { name: string; phone: string; email: string; program: string; password: string }) {
+export async function createStudent(data: { name: string; phone?: string; email: string; program: string; password: string }) {
   // Check for existing phone or email
+  const orConditions: any[] = [{ email: data.email }];
+  if (data.phone) {
+    orConditions.push({ phone: data.phone });
+  }
+
   const exists = await User.findOne({
     where: {
-      [Op.or]: [
-        { phone: data.phone },
-        { email: data.email }
-      ]
+      [Op.or]: orConditions
     }
   });
   if (exists) return null;
@@ -19,7 +21,8 @@ export async function createStudent(data: { name: string; phone: string; email: 
   const hashed = await bcrypt.hash(data.password, 10);
   // Create user
   const student = await User.create({
-    ...data, password: hashed,
+    ...data,
+    password: hashed,
     role: "student"
   });
   // Don't return the password hash
@@ -48,13 +51,13 @@ export async function verifyStudentLogin(identifier: string, password: string) {
 
 export async function updateStudentInfo(
   studentId: number,
-  updates: { name?: string; email?: string; program?: string; description?: string }
+  updates: { name?: string; phone?: string; program?: string; description?: string }
 ) {
   const student = await User.findByPk(studentId);
   if (!student) return null;
 
-  // Prevent updating phone
-  delete (updates as any).phone;
+  // Prevent updating email
+  delete (updates as any).email;
 
   await student.update(updates);
   const updated = student.toJSON() as any;

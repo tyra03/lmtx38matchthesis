@@ -6,8 +6,11 @@ import StudentCard from "./studentCard";
 interface Student {
   id: number;
   name: string;
+  phone: string;
+  email: string;
   program?: string;
   description?: string;
+  imageUrl?: string;
 }
 
 export default function StudentBrowser() {
@@ -19,7 +22,7 @@ export default function StudentBrowser() {
     const fetchStudents = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(
+        const res = await axios.get<Student[]>(
           "http://localhost:5000/api/companies/students",
           { headers: { Authorization: `Bearer ${token}` } }
         );

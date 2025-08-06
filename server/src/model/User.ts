@@ -4,7 +4,7 @@ import { sequelize } from ".";
 export interface UserAttributes {
   id: number;
   name: string;
-  phone: string;
+  phone?: string | null;
   email: string;
   program?: string; // only for students
   description?: string; // optional bio for students
@@ -14,12 +14,12 @@ export interface UserAttributes {
   imageUrl?: string; // <-- add this in UserAttributes
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, "id" | "program" | "companyName"> {}
+interface UserCreationAttributes extends Optional<UserAttributes, "id" | "program" | "companyName" | "phone"> {}
 
 export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: number;
   public name!: string;
-  public phone!: string;
+  public phone?: string | null;
   public email!: string;
   public program?: string;
   public description?: string;
@@ -41,10 +41,10 @@ User.init(
       allowNull: false 
     },
 
-    phone: { 
-      type: DataTypes.STRING, 
-      allowNull: false, 
-      unique: true 
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true
     },
 
     email: { 

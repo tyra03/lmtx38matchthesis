@@ -79,12 +79,11 @@ export default function StudentRegisterForm() {
       </Form.Group>
 
       <Form.Group controlId="phone" className="mb-3">
-        <Form.Label>Phone (unique)</Form.Label>
+        <Form.Label>Phone (Optional)</Form.Label>
         <Form.Control
           name="phone"
           value={form.phone}
           onChange={handlePhoneChange}
-          required
         />
       </Form.Group>
 

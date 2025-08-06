@@ -1,0 +1,61 @@
+.exjobb-card-container,
+.student-card-container {
+  width: 100%;
+  max-width: 550px;
+  height: 480px;
+  perspective: 1000px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.exjobb-card-inner,
+.student-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.exjobb-card-container:hover .exjobb-card-inner,
+.student-card-container:hover .student-card-inner {
+  transform: rotateY(180deg);
+}
+
+.exjobb-card-front,
+.exjobb-card-back,
+.student-card-front,
+.student-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background: #fff;
+  padding: 1rem;
+}
+
+.exjobb-card-front,
+.student-card-front {
+  z-index: 2;
+}
+
+.exjobb-card-image,
+.student-card-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: 1rem;
+  background: #eee;
+}
+
+.exjobb-card-back,
+.student-card-back {
+  background: #f8f8f8;
+  transform: rotateY(180deg);
+}

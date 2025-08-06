@@ -5,9 +5,10 @@ import { Form, Button, Alert, Spinner, Card } from "react-bootstrap";
 function EditProfile() {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
+    phone: "",
     program: "",
   });
+  const [email, setEmail] = useState("");
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState<{ type: "success" | "danger"; text: string } | null>(null);
@@ -22,9 +23,10 @@ function EditProfile() {
         });
         setFormData({
           name: res.data.name || "",
-          email: res.data.email || "",
+          phone: res.data.phone || "",
           program: res.data.program || "",
         });
+          setEmail(res.data.email || "");
       } catch (err) {
         setMessage({ type: "danger", text: "Failed to load profile information." });
       } finally {
@@ -77,10 +79,14 @@ function EditProfile() {
 
           <Form.Group className="mb-3">
             <Form.Label>Email Address</Form.Label>
+            <Form.Control type="email" value={email} readOnly />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Phone Number</Form.Label>
             <Form.Control
-              type="email"
-              name="email"
-              value={formData.email}
+              name="phone"
+              value={formData.phone}
               onChange={handleChange}
               required
             />
