@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { CHALMERS_PROGRAMS } from "../../chalmersPrograms";
 import { Form, Button, Alert } from "react-bootstrap";

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import axios from "axios";
 import {
-  Container,
   Card,
   Row,
   Col,
@@ -11,7 +10,6 @@ import {
   Alert,
   Spinner,
 } from "react-bootstrap";
-import previewCard from "./previewCard";
 import StudentPreviewCard from "./studentPreviewCard";
 import "../../css/cardImageNonPreview.css";
 

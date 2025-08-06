@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import "../../css/card.css";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   description?: string;
 }
 
-const ProfileCard: React.FC<Props> = ({ name, program, imageUrl, description }) => {
+const ProfileCard: FC<Props> = ({ name, program, imageUrl, description }) => {
   const imageSrc =
     imageUrl && !imageUrl.startsWith("http")
       ? `http://localhost:5000${imageUrl}`

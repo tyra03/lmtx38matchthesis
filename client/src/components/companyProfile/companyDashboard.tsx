@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Table, Spinner, Alert, Form } from "react-bootstrap";
+import { Table, Spinner, Alert, Form, Button } from "react-bootstrap";
 
 interface Student {
   id: number;
@@ -15,6 +15,22 @@ export default function CompanyDashboard() {
   const [selectedAd, setSelectedAd] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const sendAction = async (
+    studentId: number,
+    type: "like" | "dislike" | "favorite"
+  ) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        "http://localhost:5000/api/companies/students/actions",
+        { studentId, type },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (err) {
+      console.error("Failed to record action", err);
+    }
+  };
 
   // Fetch ads on mount
   useEffect(() => {
@@ -60,7 +76,7 @@ export default function CompanyDashboard() {
     };
     setLoading(true);
     fetchStudents();
-  }, []);
+  }, [selectedAd]);
 
   if (loading) return <Spinner animation="border" style={{ margin: "2rem" }} />;
   if (error) return <Alert variant="danger">{error}</Alert>;
@@ -92,6 +108,7 @@ export default function CompanyDashboard() {
             <th>Name</th>
             <th>Program</th>
             <th>Email</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -100,6 +117,34 @@ export default function CompanyDashboard() {
               <td>{s.name}</td>
               <td>{s.program}</td>
               <td>{s.email}</td>
+              <td className="text-center">
+                <Button
+                  variant="light"
+                  size="sm"
+                  className="me-1"
+                  onClick={() => sendAction(s.id, "favorite")}
+                  title="Favorite"
+                >
+                  ⭐
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  className="me-1"
+                  onClick={() => sendAction(s.id, "dislike")}
+                  title="Nope"
+                >
+                  ❌
+                </Button>
+                <Button
+                  variant="success"
+                  size="sm"
+                  onClick={() => sendAction(s.id, "like")}
+                  title="Like"
+                >
+                  ❤️
+                </Button>
+              </td>
             </tr>
           ))}
         </tbody>

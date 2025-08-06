@@ -18,11 +18,17 @@ const CompanySidebarMenu: React.FC = () => {
           <Nav.Link as={NavLink} to="/company/dashboard">
             🏠 Dashboard
           </Nav.Link>
-          <Nav.Link as={NavLink} to="/company/change-password">
-            🔒 Change Password
+          <Nav.Link as={NavLink} to="/company/students">
+            🎓 Browse Students
+          </Nav.Link>
+          <Nav.Link as={NavLink} to="/company/matches">
+            💬 Conversations
           </Nav.Link>
           <Nav.Link as={NavLink} to="/company/exjobbads/create">
             📢 Manage Ads
+          </Nav.Link>
+          <Nav.Link as={NavLink} to="/company/change-password">
+            🔒 Change Password
           </Nav.Link>
         </Nav>
         <div className="mt-4">

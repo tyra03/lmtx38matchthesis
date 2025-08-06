@@ -17,6 +17,8 @@ import AdminLoginForm from "./components/adminProfile/adminLogin";
 import AdminPage from "./components/adminProfile/adminPage";
 import AdminDashboard from "./components/adminProfile/adminDashboard";
 import CompanyDashboard from "./components/companyProfile/companyDashboard";
+import StudentBrowser from "./components/companyProfile/browseStudents";
+import MatchedChats from "./components/companyProfile/matchedChats";
 
 export default function App() {
   return (
@@ -36,6 +38,8 @@ export default function App() {
               <Route path="dashboard" element={<CompanyDashboard />} />
               <Route path="change-password" element={<ChangeCompanyPassword />} />
               <Route path="exjobbads/create" element={<ExjobbAdForm />} />
+              <Route path="students" element={<StudentBrowser />} />
+              <Route path="matches" element={<MatchedChats />} />
             </Route>
 
             <Route path="/student" element={<StudentPage />}> 

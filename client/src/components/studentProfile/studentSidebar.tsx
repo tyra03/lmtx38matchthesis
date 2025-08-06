@@ -1,4 +1,3 @@
-import React from "react";
 import { Nav, Card } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../../css/studentSidebar.css"; // You can extend or override with more styles

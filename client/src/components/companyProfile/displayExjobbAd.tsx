@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Badge, Row, Col } from "react-bootstrap";
 import "../../css/exjobbCard.css";
@@ -54,6 +54,7 @@ export default function ExjobbAdCards() {
   const handleFavorite = async () => {
     setFavorites([...favorites, ads[current].id]);
     await recordAction("favorite");
+    nextCard();
   };
 
   const nextCard = () => {

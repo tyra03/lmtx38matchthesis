@@ -7,6 +7,12 @@ import { getStudentsByPrograms } from "../service/studentService";
 import { getAdsForCompany, getStudentsForAd } from "../service/exjobbAdService";
 import { User } from "../model";
 import { ExjobbAd } from "../model/exjobbAd";
+import {
+  addStudentAction,
+  listMatchesForCompany,
+  listMessages,
+  sendMessage,
+} from "../service/matchService";
 
 dotenv.config();
 const router = express.Router();
@@ -130,5 +136,82 @@ router.get("/ads/:id/students", authenticateJWT, requireCompany, async (req: Aut
     res.status(500).json({ message: "Failed to retrieve students" });
 }   
 });
+
+router.post(
+  "/students/:id/:action(like|favorite|dislike)",
+  authenticateJWT,
+  requireCompany,
+  async (req: AuthRequest, res: Response) => {
+    const studentId = parseInt(req.params.id, 10);
+    const type = req.params.action as "like" | "favorite" | "dislike";
+    if (isNaN(studentId)) {
+      return res.status(400).json({ message: "Invalid student id" });
+    }
+    try {
+      const result = await addStudentAction(req.user!.userId, studentId, type);
+      res.json(result);
+    } catch (err) {
+      console.error("Error recording student action:", err);
+      res.status(500).json({ message: "Failed to record action" });
+    }
+  }
+);
+
+router.get(
+  "/matches",
+  authenticateJWT,
+  requireCompany,
+  async (req: AuthRequest, res: Response) => {
+    try {
+      const matches = await listMatchesForCompany(req.user!.userId);
+      res.json(matches);
+    } catch (err) {
+      console.error("Error fetching matches:", err);
+      res.status(500).json({ message: "Failed to retrieve matches" });
+    }
+  }
+);
+
+router.get(
+  "/matches/:id/messages",
+  authenticateJWT,
+  requireCompany,
+  async (req: AuthRequest, res: Response) => {
+    const matchId = parseInt(req.params.id, 10);
+    if (isNaN(matchId)) {
+      return res.status(400).json({ message: "Invalid match id" });
+    }
+    try {
+      const messages = await listMessages(matchId);
+      res.json(messages);
+    } catch (err) {
+      console.error("Error fetching messages:", err);
+      res.status(500).json({ message: "Failed to retrieve messages" });
+    }
+  }
+);
+
+router.post(
+  "/matches/:id/messages",
+  authenticateJWT,
+  requireCompany,
+  async (req: AuthRequest, res: Response) => {
+    const matchId = parseInt(req.params.id, 10);
+    const { content } = req.body;
+    if (isNaN(matchId)) {
+      return res.status(400).json({ message: "Invalid match id" });
+    }
+    if (!content) {
+      return res.status(400).json({ message: "Missing content" });
+    }
+    try {
+      const message = await sendMessage(matchId, req.user!.userId, "company", content);
+      res.json(message);
+    } catch (err) {
+      console.error("Error sending message:", err);
+      res.status(500).json({ message: "Failed to send message" });
+    }
+  }
+);
 
 export default router;
