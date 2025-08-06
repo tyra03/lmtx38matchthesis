@@ -4,6 +4,9 @@ import { ExjobbAction } from "../model/exjobbAction";
 import { ExjobbAd } from "../model/exjobbAd";
 import { Match } from "../model/match";
 import { Message } from "../model/message";
+import { User } from "../model";
+
+Match.belongsTo(User, { foreignKey: "studentId", as: "student" });
 
 export async function addStudentAction(
   companyId: number,
@@ -36,7 +39,14 @@ export async function addStudentAction(
 }
 
 export function listMatchesForCompany(companyId: number) {
-  return Match.findAll({ where: { companyId } });
+return Match.findAll({
+    where: { companyId },
+    include: [{ model: User, as: "student", attributes: ["id", "name"] }],
+  });
+}
+
+export function listMatchesForStudent(studentId: number) {
+  return Match.findAll({ where: { studentId } });
 }
 
 export function listMessages(matchId: number) {

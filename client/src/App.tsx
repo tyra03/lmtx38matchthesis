@@ -19,6 +19,7 @@ import AdminDashboard from "./components/adminProfile/adminDashboard";
 import CompanyDashboard from "./components/companyProfile/companyDashboard";
 import StudentBrowser from "./components/companyProfile/browseStudents";
 import MatchedChats from "./components/companyProfile/matchedChats";
+import StudentMatchedChats from "./components/studentProfile/matchedChats";
 
 export default function App() {
   return (
@@ -49,6 +50,7 @@ export default function App() {
               <Route path="upload-image" element={<UploadImage />} />
               <Route path="favorites" element={<FavoriteAds />} />
               <Route path="exjobbads" element={<ExjobbAdCards />} />
+              <Route path="matches" element={<StudentMatchedChats />} />
             </Route>
       </Routes>
     </Router>

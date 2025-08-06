@@ -1,12 +1,15 @@
 import express, { Request, Response } from "express";
 import { createStudent, verifyStudentLogin } from "../service/studentService";
 import { updateStudentInfo } from "../service/studentService";
+import { listMatchesForStudent, listMessages, sendMessage } from "../service/matchService";
+
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { User } from "../model";
+import { authenticateJWT, requireStudent, AuthRequest } from "../middleware/auth";
 
 dotenv.config();
 const router = express.Router();
@@ -132,5 +135,62 @@ router.post("/me/image", upload.single("image"), async (req: Request, res: Respo
     res.status(500).json({ message: "Image upload failed" });
   }
 });
+
+router.get(
+  "/matches",
+  authenticateJWT,
+  requireStudent,
+  async (req: AuthRequest, res: Response) => {
+    try {
+      const matches = await listMatchesForStudent(req.user!.userId);
+      res.json(matches);
+    } catch (err) {
+      console.error("Error fetching matches:", err);
+      res.status(500).json({ message: "Failed to retrieve matches" });
+    }
+  },
+);
+
+router.get(
+  "/matches/:id/messages",
+  authenticateJWT,
+  requireStudent,
+  async (req: AuthRequest, res: Response) => {
+    const matchId = parseInt(req.params.id, 10);
+    if (isNaN(matchId)) {
+      return res.status(400).json({ message: "Invalid match id" });
+    }
+    try {
+      const messages = await listMessages(matchId);
+      res.json(messages);
+    } catch (err) {
+      console.error("Error fetching messages:", err);
+      res.status(500).json({ message: "Failed to retrieve messages" });
+    }
+  },
+);
+
+router.post(
+  "/matches/:id/messages",
+  authenticateJWT,
+  requireStudent,
+  async (req: AuthRequest, res: Response) => {
+    const matchId = parseInt(req.params.id, 10);
+    const { content } = req.body;
+    if (isNaN(matchId)) {
+      return res.status(400).json({ message: "Invalid match id" });
+    }
+    if (!content) {
+      return res.status(400).json({ message: "Missing content" });
+    }
+    try {
+      const message = await sendMessage(matchId, req.user!.userId, "student", content);
+      res.json(message);
+    } catch (err) {
+      console.error("Error sending message:", err);
+      res.status(500).json({ message: "Failed to send message" });
+    }
+  },
+);
 
 export default router;

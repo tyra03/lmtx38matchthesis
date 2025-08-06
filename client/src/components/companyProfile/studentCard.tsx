@@ -13,9 +13,10 @@ interface Student {
 
 interface Props {
   student: Student;
+  showActions?: boolean;
 }
 
-export default function StudentCard({ student }: Props) {
+export default function StudentCard({ student, showActions = true }: Props) {
   const token = localStorage.getItem("token");
 
   const handleAction = async (type: "like" | "favorite" | "dislike") => {
@@ -49,21 +50,30 @@ export default function StudentCard({ student }: Props) {
         <Card.Text>
           <strong>Phone:</strong> {student.phone}
         </Card.Text>
-        <Button
-          variant="success"
-          className="me-2"
-          onClick={() => handleAction("like")}
-        >
-          Like
-        </Button>
-        <Button
-          variant="warning"
-          className="me-2"
-          onClick={() => handleAction("favorite")}
-        >
-          Favorite
-        </Button>
-        <Button variant="secondary" onClick={() => handleAction("dislike")}>Dislike</Button>
+        {showActions && (
+          <>
+            <Button
+              variant="success"
+              className="me-2"
+              onClick={() => handleAction("like")}
+            >
+              Like
+            </Button>
+            <Button
+              variant="warning"
+              className="me-2"
+              onClick={() => handleAction("favorite")}
+            >
+              Favorite
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => handleAction("dislike")}
+            >
+              Dislike
+            </Button>
+          </>
+        )}
       </Card.Body>
     </Card>
   );

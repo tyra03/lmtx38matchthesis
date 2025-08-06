@@ -17,11 +17,14 @@ const StudentSidebarMenu: React.FC = () => {
           <Nav.Link as={NavLink} to="/student/dashboard">
             🏠 Dashboard
           </Nav.Link>
+          <Nav.Link as={NavLink} to="/student/exjobbads">
+            🆕 Browse New Ads
+          </Nav.Link>
           <Nav.Link as={NavLink} to="/student/favorites">
             ⭐ Favorited Exjobb Ads
           </Nav.Link>
-          <Nav.Link as={NavLink} to="/student/exjobbads">
-            🆕 Browse New Ads
+          <Nav.Link as={NavLink} to="/student/matches">
+            💬 Conversations
           </Nav.Link>
         </Nav>
         <div className="mt-4">

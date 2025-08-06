@@ -6,10 +6,6 @@ interface Match {
   id: number;
   companyId: number;
   studentId: number;
-  student: {
-    id: number;
-    name: string;
-  };
 }
 
 interface Message {
@@ -21,7 +17,7 @@ interface Message {
   createdAt: string;
 }
 
-export default function MatchedChats() {
+export default function StudentMatchedChats() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [selected, setSelected] = useState<Match | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -31,7 +27,7 @@ export default function MatchedChats() {
   useEffect(() => {
     const fetchMatches = async () => {
       const res = await axios.get(
-        "http://localhost:5000/api/companies/matches",
+        "http://localhost:5000/api/students/matches",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMatches(res.data);
@@ -42,7 +38,7 @@ export default function MatchedChats() {
   const loadMessages = async (match: Match) => {
     setSelected(match);
     const res = await axios.get(
-      `http://localhost:5000/api/companies/matches/${match.id}/messages`,
+      `http://localhost:5000/api/students/matches/${match.id}/messages`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     setMessages(res.data);
@@ -51,7 +47,7 @@ export default function MatchedChats() {
   const send = async () => {
     if (!selected || !content.trim()) return;
     const res = await axios.post(
-      `http://localhost:5000/api/companies/matches/${selected.id}/messages`,
+      `http://localhost:5000/api/students/matches/${selected.id}/messages`,
       { content },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -65,13 +61,13 @@ export default function MatchedChats() {
       <ListGroup>
         {matches.map((m) => (
           <ListGroup.Item key={m.id} action onClick={() => loadMessages(m)}>
-            Chat with student {m.student.name}
+            Chat with company {m.companyId}
           </ListGroup.Item>
         ))}
       </ListGroup>
       {selected && (
         <div className="mt-3">
-          <h4>Chat with student {selected.student.name}</h4>
+          <h4>Chat with company {selected.companyId}</h4>
           <div style={{ maxHeight: "300px", overflowY: "auto", border: "1px solid #ccc", padding: "1rem" }}>
             {messages.map((msg) => (
               <div key={msg.id}>

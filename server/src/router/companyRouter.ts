@@ -164,8 +164,9 @@ router.get(
   async (req: AuthRequest, res: Response) => {
     try {
       const matches = await listMatchesForCompany(req.user!.userId);
-      res.json(matches);
-    } catch (err) {
+      // include student names in response
+      const plainMatches = matches.map((m) => m.get({ plain: true }));
+      res.json(plainMatches);    } catch (err) {
       console.error("Error fetching matches:", err);
       res.status(500).json({ message: "Failed to retrieve matches" });
     }
