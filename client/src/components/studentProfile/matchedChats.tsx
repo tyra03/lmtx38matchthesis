@@ -56,43 +56,53 @@ export default function StudentMatchedChats() {
   };
 
   return (
-    <div style={{ margin: "2rem" }}>
-      <h2>Matches</h2>
-      <ListGroup>
-        {matches.map((m) => (
-          <ListGroup.Item key={m.id} action onClick={() => loadMessages(m)}>
-            Chat with company {m.companyId}
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-      {selected && (
-        <div className="mt-3">
-          <h4>Chat with company {selected.companyId}</h4>
-          <div style={{ maxHeight: "300px", overflowY: "auto", border: "1px solid #ccc", padding: "1rem" }}>
-            {messages.map((msg) => (
-              <div key={msg.id}>
-                <strong>{msg.senderRole}:</strong> {msg.content}
-              </div>
+    <div className="bg-white p-3" style={{ margin: "2rem" }}>
+      <h2>Chat about {selected ? `company ${selected.companyId}` : ""}</h2>
+      <div className="d-flex">
+        <div style={{ width: "250px", maxHeight: "400px", overflowY: "auto" }}>
+          <ListGroup>
+            {matches.map((m) => (
+              <ListGroup.Item
+                key={m.id}
+                action
+                onClick={() => loadMessages(m)}
+              >
+                Chat with company {m.companyId}
+              </ListGroup.Item>
             ))}
-          </div>
-          <Form
-            className="mt-2"
-            onSubmit={(e) => {
-              e.preventDefault();
-              send();
-            }}
-          >
-            <Form.Control
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Type a message"
-            />
-            <Button className="mt-2" onClick={send}>
-              Send
-            </Button>
-          </Form>
+          </ListGroup>
         </div>
-      )}
+        <div className="ms-3 flex-grow-1 d-flex flex-column">
+          {selected ? (
+            <>
+              <div className="flex-grow-1 overflow-auto border p-2">
+                {messages.map((msg) => (
+                  <div key={msg.id}>
+                    <strong>{msg.senderRole}:</strong> {msg.content}
+                  </div>
+                ))}
+              </div>
+              <Form
+                className="mt-2 d-flex"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  send();
+                }}
+              >
+                <Form.Control
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  placeholder="Type a message"
+                  className="me-2"
+                />
+                <Button onClick={send}>Send</Button>
+              </Form>
+            </>
+          ) : (
+            <div>Select a match to start chatting</div>
+          )}
+        </div>
+      </div>
     </div>
   );
-}
+}        
